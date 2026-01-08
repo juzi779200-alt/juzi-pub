@@ -1,0 +1,3 @@
+[build]
+  command = "echo 'Skipping build for manual deploy'"
+  publish = "dist"
