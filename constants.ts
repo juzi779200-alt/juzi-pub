@@ -41,7 +41,7 @@ export const PRODUCTS: Product[] = [
     ],
     reviews: 0,
     rating: 5.0,
-    inventory: 30
+    inventory: 19
   },
   {
     id: "p1",
@@ -67,7 +67,7 @@ export const PRODUCTS: Product[] = [
     ],
     reviews: 156,
     rating: 5.0,
-    inventory: 2
+    inventory: 19
   },
 
   {
@@ -93,7 +93,7 @@ export const PRODUCTS: Product[] = [
     ],
     reviews: 0,
     rating: 5.0,
-    inventory: 3
+    inventory: 19
   },
   {
     id: "p9",
@@ -118,7 +118,7 @@ export const PRODUCTS: Product[] = [
     ],
     reviews: 0,
     rating: 5.0,
-    inventory: 3
+    inventory: 19
   },
 
   {
@@ -144,7 +144,7 @@ export const PRODUCTS: Product[] = [
     ],
     reviews: 0,
     rating: 5.0,
-    inventory: 0
+    inventory: 19
   },
 
   {
@@ -170,7 +170,7 @@ export const PRODUCTS: Product[] = [
     ],
     reviews: 203,
     rating: 4.9,
-    inventory: 0
+    inventory: 19
   },
   {
     id: "p3",
@@ -220,7 +220,7 @@ export const PRODUCTS: Product[] = [
     ],
     reviews: 412,
     rating: 4.9,
-    inventory: 11
+    inventory: 19
   },
   {
     id: "p5",
@@ -245,7 +245,7 @@ export const PRODUCTS: Product[] = [
     ],
     reviews: 95,
     rating: 4.7,
-    inventory: 13
+    inventory: 19
   },
   {
     id: "p6",
@@ -270,7 +270,7 @@ export const PRODUCTS: Product[] = [
     ],
     reviews: 110,
     rating: 4.8,
-    inventory: 15
+    inventory: 19
   },
   {
     id: "p7",
@@ -295,7 +295,7 @@ export const PRODUCTS: Product[] = [
     ],
     reviews: 67,
     rating: 4.9,
-    inventory: 17
+    inventory: 19
   },
   {
     id: "p10",
@@ -320,7 +320,7 @@ export const PRODUCTS: Product[] = [
     ],
     reviews: 0,
     rating: 4.9,
-    inventory: 9
+    inventory: 19
   },
   {
     id: "p11",
@@ -345,7 +345,7 @@ export const PRODUCTS: Product[] = [
     ],
     reviews: 0,
     rating: 4.8,
-    inventory: 5
+    inventory: 19
   }
 ];
 

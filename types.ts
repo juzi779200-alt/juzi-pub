@@ -1,9 +1,10 @@
-export type Language = 'en' | 'zh' | 'es';
+export type Language = 'en' | 'zh' | 'es' | 'ja';
 
 export interface LocalizedString {
   en: string;
   zh: string;
   es: string;
+  ja: string;
 }
 
 export interface Product {

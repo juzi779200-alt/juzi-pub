@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Menu, X, Instagram, Mail, Search, MessageCircle, Globe, CreditCard } from 'lucide-react';
+import { Menu, X, Instagram, Mail, Search, MessageCircle, Globe, CreditCard, ShoppingCart, User, Package, Check, Truck, Home } from 'lucide-react';
+import LogoIcon from './components/LogoIcon';
 import { PRODUCTS, CONTACT_INFO, CATEGORIES } from './constants';
 import ProductCard from './components/ProductCard';
 import ProductDetail from './components/ProductDetail';
 import StaticPage from './components/StaticPage';
 import ContactPage from './components/ContactPage';
 import { LanguageProvider, useLanguage } from './components/LanguageContext';
+import { CartProvider, useCart } from './components/CartContext';
+import { AuthProvider, useAuth } from './components/AuthContext';
+import Cart from './components/Cart';
+import AuthModal from './components/AuthModal';
+import Checkout from './components/Checkout';
+import OrderHistory from './components/OrderHistory';
 import { Language } from './types';
 
 
@@ -23,7 +30,14 @@ const MainApp = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [inventory, setInventory] = useState<Record<string, number>>({});
+  const [showCart, setShowCart] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [showOrderHistory, setShowOrderHistory] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const { language, setLanguage, t } = useLanguage();
+  const { user, logout } = useAuth();
+  const { totalItems } = useCart();
 
   const publicImageById: Record<string, string> = {
     p1: '/images/01.jpg',
@@ -162,6 +176,13 @@ const MainApp = () => {
                 <li key={i}>{item}</li>
               ))}
             </ul>
+            
+            <h3 className="text-xl font-bold text-gray-900 mb-2">{t.shipping.restrictedTitle}</h3>
+            <p className="mb-4">{t.shipping.restrictedDesc}</p>
+            
+            <h3 className="text-xl font-bold text-gray-900 mb-2">{t.shipping.availableTitle}</h3>
+            <p className="mb-4">{t.shipping.availableDesc}</p>
+            
             <p className="text-sm text-gray-500">{t.shipping.note}</p>
           </StaticPage>
         );
@@ -174,6 +195,10 @@ const MainApp = () => {
              </p>
              <h3 className="text-xl font-bold text-gray-900 mb-2">{t.returns.standardTitle}</h3>
              <p className="mb-4">{t.returns.standardDesc}</p>
+             <h3 className="text-xl font-bold text-gray-900 mb-2">{t.returns.deliveredTitle}</h3>
+             <p className="mb-4">{t.returns.deliveredDesc}</p>
+             <h3 className="text-xl font-bold text-gray-900 mb-2">{t.returns.openedTitle}</h3>
+             <p className="mb-4">{t.returns.openedDesc}</p>
              <h3 className="text-xl font-bold text-gray-900 mb-2">{t.returns.damagedTitle}</h3>
              <p className="mb-4">{t.returns.damagedDesc}</p>
           </StaticPage>
@@ -196,15 +221,81 @@ const MainApp = () => {
       case 'track':
         return (
           <StaticPage title={t.track.title} onBack={() => navigateTo('home')}>
-             <div className="max-w-md mx-auto text-center">
-               <p className="mb-8 text-gray-600">{t.track.desc}</p>
-               <div className="flex gap-2">
+             <div className="max-w-2xl mx-auto">
+               <p className="mb-8 text-gray-600 text-center">{t.track.desc}</p>
+               <div className="flex gap-2 mb-8">
                  <input type="text" placeholder={t.track.placeholder} className="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none" />
                  <button className="bg-brand-dark text-white px-6 py-3 rounded-xl font-bold hover:bg-brand-accent transition-colors">
                    <Search size={20} />
                  </button>
                </div>
-               <p className="mt-6 text-sm text-gray-400">{t.track.note}</p>
+               
+               {/* 模拟物流信息 */}
+               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+                 <div className="flex justify-between items-center mb-4">
+                   <h3 className="text-lg font-bold text-gray-900">Order #JP-8821</h3>
+                   <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">In Transit</span>
+                 </div>
+                 
+                 <div className="space-y-6">
+                   <div className="flex">
+                     <div className="flex flex-col items-center mr-4">
+                       <div className="w-8 h-8 rounded-full bg-brand-accent text-white flex items-center justify-center">
+                         <Check size={16} />
+                       </div>
+                       <div className="flex-1 w-0.5 bg-gray-200"></div>
+                     </div>
+                     <div>
+                       <h4 className="font-bold text-gray-900">Order Placed</h4>
+                       <p className="text-sm text-gray-500">February 28, 2026 14:30</p>
+                       <p className="mt-1 text-gray-600">Your order has been received and is being processed.</p>
+                     </div>
+                   </div>
+                   
+                   <div className="flex">
+                     <div className="flex flex-col items-center mr-4">
+                       <div className="w-8 h-8 rounded-full bg-brand-accent text-white flex items-center justify-center">
+                         <Check size={16} />
+                       </div>
+                       <div className="flex-1 w-0.5 bg-gray-200"></div>
+                     </div>
+                     <div>
+                       <h4 className="font-bold text-gray-900">Order Shipped</h4>
+                       <p className="text-sm text-gray-500">February 29, 2026 09:15</p>
+                       <p className="mt-1 text-gray-600">Your order has been shipped via DHL. Tracking number: 1234567890</p>
+                     </div>
+                   </div>
+                   
+                   <div className="flex">
+                     <div className="flex flex-col items-center mr-4">
+                       <div className="w-8 h-8 rounded-full bg-brand-accent text-white flex items-center justify-center">
+                         <Truck size={16} />
+                       </div>
+                       <div className="flex-1 w-0.5 bg-gray-200"></div>
+                     </div>
+                     <div>
+                       <h4 className="font-bold text-gray-900">In Transit</h4>
+                       <p className="text-sm text-gray-500">March 2, 2026 16:45</p>
+                       <p className="mt-1 text-gray-600">Your package is currently in transit to your destination.</p>
+                     </div>
+                   </div>
+                   
+                   <div className="flex">
+                     <div className="flex flex-col items-center mr-4">
+                       <div className="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center">
+                         <Home size={16} />
+                       </div>
+                     </div>
+                     <div>
+                       <h4 className="font-bold text-gray-400">Delivered</h4>
+                       <p className="text-sm text-gray-400">Estimated: March 5, 2026</p>
+                       <p className="mt-1 text-gray-400">Your package is expected to be delivered by this date.</p>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+               
+               <p className="text-sm text-gray-400 text-center">{t.track.note}</p>
              </div>
           </StaticPage>
         );
@@ -214,32 +305,35 @@ const MainApp = () => {
         return (
           <>
             {/* Hero Section */}
-            <section className="relative mb-12 px-4 container mx-auto">
-              <div className="bg-gradient-to-r from-brand-pink to-brand-purple rounded-3xl p-8 md:p-16 text-center relative overflow-hidden shadow-lg border border-white/50">
-                <div className="relative z-10 max-w-2xl mx-auto">
-                    <span className="bg-white/70 backdrop-blur-sm text-brand-dark px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-6 inline-block shadow-sm">
+            <section className="relative mb-6 px-4 container mx-auto">
+              <div className="bg-gradient-to-r from-brand-pink to-brand-purple rounded-2xl p-4 md:p-8 text-center relative overflow-hidden shadow-sm border border-white/50">
+                <div className="relative z-10 max-w-lg mx-auto">
+                    <span className="bg-white/70 backdrop-blur-sm text-brand-dark px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-widest mb-3 inline-block shadow-sm">
                         {t.hero.newCollection}
                     </span>
-                    <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900 leading-tight">
+                    <h1 className="text-2xl md:text-3xl font-bold mb-3 text-gray-900 leading-tight">
                         {t.hero.title} <br/>
                         <span className="text-brand-accent">{t.hero.subtitle}</span>
                     </h1>
-                    <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+                    <p className="text-sm text-gray-700 mb-4 leading-relaxed">
                         {t.hero.description}
+                    </p>
+                    <p className="text-xs text-brand-dark bg-white/70 backdrop-blur-sm p-2 rounded-lg mb-4">
+                        <strong>Shipping Notice:</strong> Please check our shipping policy for available countries before ordering. We currently ship to most countries including the US, UK, Japan, Australia, New Zealand, Malaysia, and more. Some countries are restricted due to regulations.
                     </p>
                     <button 
                       onClick={() => {
                         const grid = document.getElementById('product-grid');
                         grid?.scrollIntoView({ behavior: 'smooth' });
                       }}
-                      className="bg-brand-dark text-white px-8 py-3.5 rounded-full font-bold hover:bg-brand-accent hover:shadow-xl hover:-translate-y-1 transition-all shadow-lg shadow-brand-dark/20"
+                      className="bg-white text-brand-dark px-5 py-2 rounded-full font-bold hover:bg-brand-pink hover:text-white hover:shadow-md hover:-translate-y-1 transition-all shadow-sm text-sm"
                     >
                         {t.hero.cta}
                     </button>
                 </div>
                 {/* Decorative circles */}
-                <div className="absolute top-0 left-0 w-64 h-64 bg-white/30 rounded-full -translate-x-1/2 -translate-y-1/2 blur-2xl"></div>
-                <div className="absolute bottom-0 right-0 w-96 h-96 bg-brand-accent/20 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>
+                <div className="absolute top-0 left-0 w-32 h-32 bg-white/30 rounded-full -translate-x-1/2 -translate-y-1/2 blur-xl"></div>
+                <div className="absolute bottom-0 right-0 w-48 h-48 bg-brand-accent/20 rounded-full translate-x-1/3 translate-y-1/3 blur-2xl"></div>
               </div>
             </section>
 
@@ -247,7 +341,7 @@ const MainApp = () => {
             <section id="product-grid" className="container mx-auto px-4 mb-20">
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                      <Sparkles className="text-brand-accent" size={24} />
+                      <LogoIcon className="text-brand-accent" size={24} />
                       {t.home.trending}
                     </h2>
                     <div className="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">{PRODUCTS.length} {t.home.items}</div>
@@ -311,7 +405,7 @@ const MainApp = () => {
 
   const LanguageSelector = () => (
     <div className="flex items-center bg-gray-100 rounded-lg p-1">
-      {(['en', 'zh', 'es'] as Language[]).map((lang) => (
+      {(['en', 'zh', 'es', 'ja'] as Language[]).map((lang) => (
         <button
           key={lang}
           onClick={() => setLanguage(lang)}
@@ -328,12 +422,37 @@ const MainApp = () => {
   return (
     <div className="min-h-screen flex flex-col font-sans text-brand-dark bg-gray-50/50 overflow-x-hidden">
     
+      {/* Service Area Notification */}
+      <div className="bg-yellow-100 border-b border-yellow-200 py-2 text-center text-sm">
+        <div className="container mx-auto px-4">
+          <p className="mb-1">
+            If the item you wanted to purchase shows Out of Stock today, please don't worry. We restock a limited amount of inventory every day around 8:00 AM New York time and we will not close the shop for long periods.
+          </p>
+          <p className="mb-2">
+            We process orders in the order they are received. For detailed information about order processing time and shipping duration, please refer to the <button onClick={() => navigateTo('shipping')} className="text-blue-600 hover:underline font-medium">Shipping Policy</button> section.
+          </p>
+          <div className="flex flex-wrap justify-center gap-2 text-xs">
+            <span className="font-medium">Service Area:</span>
+            <button onClick={() => navigateTo('shipping')} className="text-blue-600 hover:underline">United States (CA, TX, & NY only)</button>
+            <span className="text-gray-500">|</span>
+            <span className="font-medium">For other countries and regions:</span>
+            <button onClick={() => navigateTo('shipping')} className="text-blue-600 hover:underline">United States (excluding CA, TX, NY)</button>
+            <span className="text-gray-500">|</span>
+            <button onClick={() => navigateTo('shipping')} className="text-blue-600 hover:underline">European countries</button>
+            <span className="text-gray-500">|</span>
+            <button onClick={() => navigateTo('shipping')} className="text-blue-600 hover:underline">New Zealand, Australia</button>
+            <span className="text-gray-500">|</span>
+            <button onClick={() => navigateTo('shipping')} className="text-blue-600 hover:underline">Asia, Mexico, Canada</button>
+          </div>
+        </div>
+      </div>
       
       {/* Header */}
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || currentView !== 'home' ? 'bg-white/95 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-4'}`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || currentView !== 'home' ? 'bg-white/95 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-4'}`} style={{ top: '7.5rem' }}>
         <div className="container mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center cursor-pointer" onClick={() => navigateTo('home')}>
-            <img src="/logo.png" alt="Logo" className="h-10 w-auto" />
+            <img src="/images/logo.jpg" alt="Logo" className="h-10 w-auto" />
+            <span className="ml-2 text-xl font-bold text-gray-900">luckboxshop</span>
           </div>
 
           <nav className="hidden md:flex items-center gap-8 font-medium text-gray-600">
@@ -345,6 +464,59 @@ const MainApp = () => {
           </nav>
 
           <div className="flex items-center gap-4">
+             <button 
+               onClick={() => setShowCart(true)}
+               className="relative text-gray-700 hover:text-brand-accent p-1"
+             >
+               <ShoppingCart size={24} />
+               {totalItems > 0 && (
+                 <span className="absolute -top-2 -right-2 bg-brand-accent text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+                   {totalItems}
+                 </span>
+               )}
+             </button>
+             
+             {user ? (
+               <div className="flex items-center gap-4">
+                 <button 
+                   onClick={() => setShowOrderHistory(true)}
+                   className="text-gray-700 hover:text-brand-accent p-1"
+                 >
+                   <Package size={24} />
+                 </button>
+                 <div className="relative group">
+                   <button className="text-gray-700 hover:text-brand-accent p-1">
+                     <User size={24} />
+                   </button>
+                   <div className="absolute right-0 top-full mt-2 bg-white shadow-lg rounded-xl p-2 w-40 hidden group-hover:block">
+                     <div className="px-4 py-2 border-b border-gray-100">
+                       <p className="font-medium">{user.name}</p>
+                       <p className="text-sm text-gray-500">{user.email}</p>
+                     </div>
+                     <button 
+                       onClick={() => setShowOrderHistory(true)}
+                       className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg"
+                     >
+                       Order History
+                     </button>
+                     <button 
+                       onClick={logout}
+                       className="block w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg text-red-500"
+                     >
+                       Sign Out
+                     </button>
+                   </div>
+                 </div>
+               </div>
+             ) : (
+               <button 
+                 onClick={() => setShowAuth(true)}
+                 className="text-gray-700 hover:text-brand-accent p-1"
+               >
+                 <User size={24} />
+               </button>
+             )}
+             
              <div className="hidden sm:block">
                <LanguageSelector />
              </div>
@@ -372,7 +544,7 @@ const MainApp = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow pt-28 md:pt-32">
+      <main className="flex-grow pt-48 md:pt-52">
         {renderContent()}
       </main>
 
@@ -395,7 +567,7 @@ const MainApp = () => {
                 <div>
                     <div className="flex items-center gap-2 mb-6" onClick={() => navigateTo('home')}>
                          <div className="bg-brand-accent text-white p-1.5 rounded-md cursor-pointer">
-                            <Sparkles size={16} />
+                            <LogoIcon size={16} />
                         </div>
                         <span className="text-xl font-bold cursor-pointer hover:text-brand-accent transition-colors">{t.nav.brandName}</span>
                     </div>
@@ -446,13 +618,72 @@ const MainApp = () => {
             </div>
         </div>
       </footer>
+      
+      {/* Modals */}
+      {showCart && (
+        <Cart 
+          onClose={() => setShowCart(false)} 
+          onCheckout={() => {
+            setShowCart(false);
+            setShowCheckout(true);
+          }} 
+        />
+      )}
+      
+      {showAuth && (
+        <AuthModal onClose={() => setShowAuth(false)} />
+      )}
+      
+      {showCheckout && (
+        <Checkout 
+          onClose={() => setShowCheckout(false)} 
+          onSuccess={() => {
+            setShowCheckout(false);
+            setShowSuccess(true);
+          }} 
+        />
+      )}
+      
+      {showOrderHistory && (
+        <OrderHistory onClose={() => setShowOrderHistory(false)} />
+      )}
+      
+      {showSuccess && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 text-center">
+            <div className="mb-6">
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500 mx-auto">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Order Placed Successfully!</h2>
+            <p className="text-gray-500 mb-6">
+              Your order has been placed successfully. You will receive a confirmation email shortly.
+            </p>
+            <button 
+              onClick={() => {
+                setShowSuccess(false);
+                navigateTo('home');
+              }}
+              className="bg-brand-dark text-white px-6 py-3 rounded-xl font-bold hover:bg-brand-accent transition-colors"
+            >
+              Continue Shopping
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 const App = () => (
   <LanguageProvider>
-    <MainApp />
+    <AuthProvider>
+      <CartProvider>
+        <MainApp />
+      </CartProvider>
+    </AuthProvider>
   </LanguageProvider>
 );
 
