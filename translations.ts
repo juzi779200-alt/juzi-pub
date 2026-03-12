@@ -11,7 +11,7 @@ export const translations = {
       faq: "FAQ",
       shipping: "Shipping",
       returns: "Returns",
-      brandName: "Luckboxshop"
+      brandName: "luckboxdiy"
     },
     hero: {
       newCollection: "New Collection",
@@ -81,7 +81,7 @@ export const translations = {
     about: {
       title: "About Us",
       content: [
-        "Welcome to Luckboxshop, your ultimate destination for cute stationery, lucky boxes, and collectible treasures!",
+        "Welcome to luckboxdiy, your ultimate destination for cute stationery, lucky boxes, and collectible treasures!",
         "Founded with a passion for all things kawaii, we strive to bring joy to your doorstep with our carefully curated selection of items. Whether you are looking for the latest character accessories or the thrill of a blind scoop, we have something special for you.",
         "We are a small, dedicated team sourcing directly from manufacturers to ensure authenticity and the best prices. Our 'Lucky Boxes' have gone viral for their generosity and variety, making every unboxing experience a surprise party."
       ],
@@ -155,7 +155,7 @@ export const translations = {
       faq: "常见问题",
       shipping: "发货说明",
       returns: "退换货",
-      brandName: "luckboxshop"
+      brandName: "luckboxdiy"
     },
     hero: {
       newCollection: "新品上市",
@@ -225,7 +225,7 @@ export const translations = {
     about: {
       title: "关于我们",
       content: [
-        "欢迎来到 Luckboxshop，这里是可爱文具、幸运盒子和收藏珍品的终极目的地！",
+        "欢迎来到 luckboxdiy，这里是可爱文具、幸运盒子和收藏珍品的终极目的地！",
         "出于对所有可爱事物的热爱，我们致力于通过精心挑选的商品为您带来快乐。无论您是在寻找最新的角色周边配件，还是体验幸运盒子的惊喜，我们都有适合您的特别好物。",
         "我们是一个位于亚洲的小型专注团队，直接从制造商采购，以确保更优价格与稳定供货。我们的“幸运盒子”因内容丰富、诚意十足而走红，让每一次开箱都像派对一样开心。"
       ],
@@ -369,7 +369,7 @@ export const translations = {
     about: {
       title: "Sobre Nosotros",
       content: [
-        "¡Bienvenido a Luckboxshop, tu destino definitivo para papelería linda, cajas de la suerte y tesoros coleccionables!",
+        "¡Bienvenido a luckboxdiy, tu destino definitivo para papelería linda, cajas de la suerte y tesoros coleccionables!",
         "Fundada con pasión por todo lo kawaii, nos esforzamos por traer alegría a tu puerta con nuestra selección cuidadosamente curada. Ya sea que busques los últimos accesorios o la emoción de un scoop sorpresa, tenemos algo especial para ti.",
         "Somos un equipo pequeño y dedicado en Asia, que compra directamente a los fabricantes para garantizar autenticidad y los mejores precios."
       ],

@@ -452,7 +452,7 @@ const MainApp = () => {
         <div className="container mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center cursor-pointer" onClick={() => navigateTo('home')}>
             <img src="/images/logo.jpg" alt="Logo" className="h-10 w-auto" />
-            <span className="ml-2 text-xl font-bold text-gray-900">luckboxshop</span>
+            <span className="ml-2 text-xl font-bold text-gray-900">luckboxdiy</span>
           </div>
 
           <nav className="hidden md:flex items-center gap-8 font-medium text-gray-600">
