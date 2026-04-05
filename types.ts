@@ -1,10 +1,14 @@
-export type Language = 'en' | 'zh' | 'es' | 'ja';
+export type Language = 'en' | 'es';
 
 export interface LocalizedString {
   en: string;
-  zh: string;
   es: string;
-  ja: string;
+}
+
+export interface ProductVariant {
+  id: string;
+  name: LocalizedString;
+  price: number;
 }
 
 export interface Product {
@@ -18,29 +22,19 @@ export interface Product {
   reviews: number;
   rating: number;
   inventory: number;
-}
-
-export interface BankDetails {
-  beneficiary: string;
-  address: string;
-  city: string;
-  province: string;
-  country: string;
-  accountNumber: string;
-  swiftCode: string;
-  bankName: string;
+  variants?: ProductVariant[];
 }
 
 export interface CategoryProduct {
   id: string;
-  name: string;
+  name: LocalizedString;
   price: number;
-  description: string;
+  description: LocalizedString;
   image: string;
 }
 
 export interface Category {
   id: string;
-  name: string;
+  name: LocalizedString;
   products: CategoryProduct[];
 }

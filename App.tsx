@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Instagram, Mail, Search, MessageCircle, Globe, CreditCard, ShoppingCart, User, Package, Check, Truck, Home } from 'lucide-react';
+import { Menu, X, Instagram, Mail, Search, MessageCircle, Globe, CreditCard, ShoppingCart, User, Package, Check, Truck, Home, Music } from 'lucide-react';
 import LogoIcon from './components/LogoIcon';
-import { PRODUCTS, CONTACT_INFO, CATEGORIES } from './constants';
+import { PRODUCTS, CONTACT_INFO, CATEGORIES, SOCIAL_LINKS } from './constants';
 import ProductCard from './components/ProductCard';
 import ProductDetail from './components/ProductDetail';
 import StaticPage from './components/StaticPage';
@@ -19,10 +19,11 @@ import { Language } from './types';
 // Vite 的 import.meta.glob 在部分 TS 配置下会提示“ImportMeta 上不存在 glob”，
 // 这里用类型断言绕过，运行时仍由 Vite 处理
 // 引入所有图片以确保它们被打包到 dist/assets 中
-const imageModules = (import.meta as any).glob('./images/*.jpg', { eager: true });
-const images = Object.values(imageModules).map(module => (module as { default: string }).default);
+// 注释掉图片导入代码，因为我们直接使用 public/images 目录中的图片
+// const imageModules = (import.meta as any).glob('./images/*.jpg', { eager: true });
+// const images = Object.values(imageModules).map(module => (module as { default: string }).default);
 
-type ViewState = 'home' | 'all' | 'product' | 'about' | 'contact' | 'shipping' | 'returns' | 'faq' | 'track';
+type ViewState = 'home' | 'all' | 'product' | 'about' | 'contact' | 'shipping' | 'returns' | 'faq' | 'track' | 'privacy' | 'terms';
 
 const MainApp = () => {
   const [currentView, setCurrentView] = useState<ViewState>('home');
@@ -51,7 +52,9 @@ const MainApp = () => {
     p9: '/images/12.jpg',
     p10: '/images/13.jpg',
     p11: '/images/09.jpg',
-    p12: '/images/07.jpg'
+    p12: '/images/07.jpg',
+    p14: '/images/14.jpg',
+    p15: '/images/15.jpg'
   };
 
   useEffect(() => {
@@ -105,16 +108,16 @@ const MainApp = () => {
             <div className="space-y-12">
               {CATEGORIES.map((cat) => (
                 <div key={cat.id}>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-6">{cat.name}</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-6">{cat.name[language]}</h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8">
                     {cat.products.map((p) => (
                       <div key={p.id} className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
                         <div className="relative aspect-square bg-gray-100 overflow-hidden">
-                          <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
+                          <img src={p.image} alt={p.name[language]} className="w-full h-full object-cover" />
                         </div>
                         <div className="p-4">
-                          <h4 className="font-bold text-gray-900 text-sm md:text-base mb-2">{p.name}</h4>
-                          <p className="text-xs text-gray-500 mb-3">{p.description}</p>
+                          <h4 className="font-bold text-gray-900 text-sm md:text-base mb-2">{p.name[language]}</h4>
+                          <p className="text-xs text-gray-500 mb-3">{p.description[language]}</p>
                           <div className="text-base md:text-lg font-bold text-gray-900 tracking-tight">${p.price.toFixed(2)}</div>
                         </div>
                       </div>
@@ -123,7 +126,7 @@ const MainApp = () => {
                 </div>
               ))}
               <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">所有单品</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">All Products</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8">
                   {PRODUCTS.filter(p => p.id !== 'p14').map(product => (
                     <ProductCard key={product.id} product={product} onClick={handleProductClick} />
@@ -164,43 +167,82 @@ const MainApp = () => {
       case 'shipping':
         return (
           <StaticPage title={t.shipping.title} onBack={() => navigateTo('home')}>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">{t.shipping.processingTitle}</h3>
-            <p className="mb-4">{t.shipping.processingDesc}</p>
+            <p className="mb-8">{t.shipping.intro}</p>
             
-            <h3 className="text-xl font-bold text-gray-900 mb-2">{t.shipping.ratesTitle}</h3>
-            <p className="mb-4">{t.shipping.ratesDesc}</p>
-            
-            <h3 className="text-xl font-bold text-gray-900 mb-2">{t.shipping.deliveryTitle}</h3>
-            <ul className="list-disc pl-5 space-y-2 mb-4">
-              {t.shipping.deliveryList.map((item, i) => (
-                <li key={i}>{item}</li>
-              ))}
-            </ul>
-            
-            <h3 className="text-xl font-bold text-gray-900 mb-2">{t.shipping.restrictedTitle}</h3>
-            <p className="mb-4">{t.shipping.restrictedDesc}</p>
-            
-            <h3 className="text-xl font-bold text-gray-900 mb-2">{t.shipping.availableTitle}</h3>
-            <p className="mb-4">{t.shipping.availableDesc}</p>
-            
-            <p className="text-sm text-gray-500">{t.shipping.note}</p>
+            {Object.entries(t.shipping.regions).map(([regionKey, region]) => (
+              <div key={regionKey} className="mb-8">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">{region.title}</h3>
+                <div className="space-y-3">
+                  {region.countries.map((country, index) => (
+                    <div key={index} className="bg-gray-50 rounded-xl p-4">
+                      <div className="font-medium text-gray-900">{country.name}</div>
+                      {country.note && (
+                        <p className="text-sm text-gray-600 mt-2">{country.note}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </StaticPage>
         );
 
       case 'returns':
         return (
           <StaticPage title={t.returns.title} onBack={() => navigateTo('home')}>
-             <p className="mb-4 bg-yellow-50 p-4 rounded-xl border border-yellow-100 text-yellow-800 font-medium">
-               {t.returns.note}
-             </p>
-             <h3 className="text-xl font-bold text-gray-900 mb-2">{t.returns.standardTitle}</h3>
-             <p className="mb-4">{t.returns.standardDesc}</p>
-             <h3 className="text-xl font-bold text-gray-900 mb-2">{t.returns.deliveredTitle}</h3>
-             <p className="mb-4">{t.returns.deliveredDesc}</p>
-             <h3 className="text-xl font-bold text-gray-900 mb-2">{t.returns.openedTitle}</h3>
-             <p className="mb-4">{t.returns.openedDesc}</p>
-             <h3 className="text-xl font-bold text-gray-900 mb-2">{t.returns.damagedTitle}</h3>
-             <p className="mb-4">{t.returns.damagedDesc}</p>
+             <p className="mb-8 text-gray-600">{t.returns.intro}</p>
+             
+             <div className="mb-8">
+               <h3 className="text-xl font-bold text-gray-900 mb-3">{t.returns.contact.title}</h3>
+               <p className="text-gray-600">{t.returns.contact.desc}</p>
+             </div>
+             
+             <div className="mb-8">
+               <h3 className="text-xl font-bold text-gray-900 mb-3">{t.returns.shipping.title}</h3>
+               <div className="space-y-4">
+                 <div className="bg-gray-50 rounded-xl p-4">
+                   <h4 className="font-bold text-gray-900 mb-2">{t.returns.shipping.cancellation.title}</h4>
+                   <p className="text-gray-600 text-sm">{t.returns.shipping.cancellation.desc}</p>
+                 </div>
+                 <div className="bg-gray-50 rounded-xl p-4">
+                   <h4 className="font-bold text-gray-900 mb-2">{t.returns.shipping.address.title}</h4>
+                   <p className="text-gray-600 text-sm">{t.returns.shipping.address.desc}</p>
+                 </div>
+                 <div className="bg-gray-50 rounded-xl p-4">
+                   <h4 className="font-bold text-gray-900 mb-2">{t.returns.shipping.verification.title}</h4>
+                   <p className="text-gray-600 text-sm">{t.returns.shipping.verification.desc}</p>
+                 </div>
+                 <div className="bg-gray-50 rounded-xl p-4">
+                   <h4 className="font-bold text-gray-900 mb-2">{t.returns.shipping.lost.title}</h4>
+                   <p className="text-gray-600 text-sm">{t.returns.shipping.lost.desc}</p>
+                 </div>
+                 <div className="bg-gray-50 rounded-xl p-4">
+                   <h4 className="font-bold text-gray-900 mb-2">{t.returns.shipping.notReceived.title}</h4>
+                   <p className="text-gray-600 text-sm">{t.returns.shipping.notReceived.desc}</p>
+                 </div>
+               </div>
+             </div>
+             
+             <div className="mb-8">
+               <h3 className="text-xl font-bold text-gray-900 mb-3">{t.returns.notes.title}</h3>
+               <p className="text-gray-600">{t.returns.notes.desc}</p>
+             </div>
+             
+             <div className="mb-8">
+               <h3 className="text-xl font-bold text-gray-900 mb-3">{t.returns.confirmation.title}</h3>
+               <p className="text-gray-600">{t.returns.confirmation.desc}</p>
+             </div>
+             
+             <div className="mb-8">
+               <h3 className="text-xl font-bold text-gray-900 mb-3">{t.returns.oneBox.title}</h3>
+               <p className="text-gray-600">{t.returns.oneBox.desc}</p>
+             </div>
+             
+             <div className="mb-8">
+               <h3 className="text-xl font-bold text-gray-900 mb-3">{t.returns.additional.title}</h3>
+               <p className="text-gray-600">{t.returns.additional.processingTime}</p>
+               <p className="text-gray-600">{t.returns.additional.shippingTime}</p>
+             </div>
           </StaticPage>
         );
 
@@ -300,6 +342,176 @@ const MainApp = () => {
           </StaticPage>
         );
 
+      case 'privacy':
+        return (
+          <StaticPage title="Privacy Policy" onBack={() => navigateTo('home')}>
+            <div className="space-y-6 text-gray-600">
+              <p className="text-sm text-gray-500">Last updated: {new Date().toLocaleDateString()}</p>
+              
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">1. Information We Collect</h3>
+                <p className="mb-3">We collect information you provide directly to us, including:</p>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li>Name, email address, and contact information</li>
+                  <li>Shipping and billing addresses</li>
+                  <li>Payment information (processed securely by PayPal)</li>
+                  <li>Order history and preferences</li>
+                  <li>Communications with our customer service team</li>
+                </ul>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">2. How We Use Your Information</h3>
+                <p className="mb-3">We use the information we collect to:</p>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li>Process and fulfill your orders</li>
+                  <li>Send order confirmations and shipping updates</li>
+                  <li>Respond to your inquiries and provide customer support</li>
+                  <li>Send promotional communications (with your consent)</li>
+                  <li>Improve our website and services</li>
+                  <li>Detect and prevent fraud</li>
+                </ul>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">3. Information Sharing</h3>
+                <p className="mb-3">We do not sell, trade, or rent your personal information to third parties. We may share your information with:</p>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li>Payment processors (PayPal) to complete transactions</li>
+                  <li>Shipping carriers to deliver your orders</li>
+                  <li>Service providers who assist in our operations</li>
+                  <li>Legal authorities when required by law</li>
+                </ul>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">4. Data Security</h3>
+                <p>We implement appropriate security measures to protect your personal information. However, no method of transmission over the Internet is 100% secure, and we cannot guarantee absolute security.</p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">5. Cookies</h3>
+                <p>We use cookies to enhance your browsing experience, analyze site traffic, and personalize content. You can control cookie settings through your browser preferences.</p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">6. Your Rights</h3>
+                <p className="mb-3">You have the right to:</p>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li>Access and update your personal information</li>
+                  <li>Request deletion of your data</li>
+                  <li>Opt-out of marketing communications</li>
+                  <li>Request a copy of your data</li>
+                </ul>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">7. Children's Privacy</h3>
+                <p>Our services are not intended for children under 13. We do not knowingly collect personal information from children under 13.</p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">8. Contact Us</h3>
+                <p>If you have any questions about this Privacy Policy, please contact us at:</p>
+                <p className="mt-2"><strong>Email:</strong> {CONTACT_INFO.email1}</p>
+              </section>
+            </div>
+          </StaticPage>
+        );
+
+      case 'terms':
+        return (
+          <StaticPage title="Terms of Service" onBack={() => navigateTo('home')}>
+            <div className="space-y-6 text-gray-600">
+              <p className="text-sm text-gray-500">Last updated: {new Date().toLocaleDateString()}</p>
+              
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">1. Acceptance of Terms</h3>
+                <p>By accessing and using luckboxdiy.com, you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our website.</p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">2. Products and Services</h3>
+                <p className="mb-3">We offer:</p>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li>Lucky Spoon mystery boxes with randomly selected items</li>
+                  <li>Surprise boxes with themed contents</li>
+                  <li>Order packing video services</li>
+                  <li>Various kawaii stationery and accessories</li>
+                </ul>
+                <p className="mt-3">We reserve the right to modify, discontinue, or limit availability of any product at any time without notice.</p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">3. Pricing and Payment</h3>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li>All prices are listed in USD</li>
+                  <li>We accept PayPal as payment method</li>
+                  <li>Payment must be received before orders are processed</li>
+                  <li>We reserve the right to cancel orders due to pricing errors</li>
+                </ul>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">4. Shipping and Delivery</h3>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li>Shipping times are estimates and not guaranteed</li>
+                  <li>Risk of loss passes to you upon delivery</li>
+                  <li>We are not responsible for delays caused by customs or shipping carriers</li>
+                  <li>International customers are responsible for customs duties and taxes</li>
+                </ul>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">5. Returns and Refunds</h3>
+                <p className="mb-3">Due to the nature of our mystery box products:</p>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li>Lucky Spoon and Surprise Box items are non-refundable</li>
+                  <li>Damaged items may be eligible for replacement</li>
+                  <li>Order Packing Video purchases are non-refundable once the video is created</li>
+                  <li>Please refer to our Refund Policy for detailed information</li>
+                </ul>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">6. Intellectual Property</h3>
+                <p>All content on this website, including text, images, logos, and designs, is owned by luckboxdiy and protected by intellectual property laws. You may not reproduce, distribute, or use our content without permission.</p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">7. User Accounts</h3>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li>You are responsible for maintaining account confidentiality</li>
+                  <li>You must provide accurate and complete information</li>
+                  <li>You are responsible for all activities under your account</li>
+                  <li>We may suspend or terminate accounts that violate these terms</li>
+                </ul>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">8. Limitation of Liability</h3>
+                <p>luckboxdiy shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our products or services. Our total liability shall not exceed the amount you paid for your order.</p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">9. Changes to Terms</h3>
+                <p>We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting. Your continued use of the website constitutes acceptance of modified terms.</p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">10. Governing Law</h3>
+                <p>These terms shall be governed by and construed in accordance with applicable laws. Any disputes shall be resolved through arbitration or in courts of competent jurisdiction.</p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">11. Contact Information</h3>
+                <p>For questions about these Terms of Service, please contact us at:</p>
+                <p className="mt-2"><strong>Email:</strong> {CONTACT_INFO.email1}</p>
+              </section>
+            </div>
+          </StaticPage>
+        );
+
       case 'home':
       default:
         return (
@@ -347,13 +559,13 @@ const MainApp = () => {
                     <div className="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">{PRODUCTS.length} {t.home.items}</div>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8 mb-8">
-                  {PRODUCTS.filter(p => p.id === 'p14').map(product => (
+                  {PRODUCTS.filter(p => p.id === 'p14' || p.id === 'p15').map(product => (
                     <ProductCard key={product.id} product={product} onClick={handleProductClick} inventory={inventory[product.id]} />
                   ))}
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold text-brand-accent mb-4">幸运盒子主题系列</h3>
+                <h3 className="text-xl md:text-2xl font-bold text-brand-accent mb-4">Surprise Box Theme Collection</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 lg:gap-8">
-                  {PRODUCTS.filter(p => p.id !== 'p14').map((product) => {
+                  {PRODUCTS.filter(p => p.id !== 'p14' && p.id !== 'p15').map((product) => {
                     const currentInventory = inventory[product.id] ?? product.inventory;
                     const isOutOfStock = currentInventory <= 0;
                     
@@ -405,7 +617,7 @@ const MainApp = () => {
 
   const LanguageSelector = () => (
     <div className="flex items-center bg-gray-100 rounded-lg p-1">
-      {(['en', 'zh', 'es', 'ja'] as Language[]).map((lang) => (
+      {(['en', 'es'] as Language[]).map((lang) => (
         <button
           key={lang}
           onClick={() => setLanguage(lang)}
@@ -548,17 +760,7 @@ const MainApp = () => {
         {renderContent()}
       </main>
 
-      {/* Floating WhatsApp Button */}
-      <a 
-        href={`https://wa.me/${CONTACT_INFO.whatsapp.replace(/[^0-9]/g, '')}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform z-40 flex items-center gap-2 group"
-        title="Chat on WhatsApp"
-      >
-        <MessageCircle size={28} />
-        <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 whitespace-nowrap font-bold">Chat with us</span>
-      </a>
+
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12 mt-auto">
@@ -575,12 +777,15 @@ const MainApp = () => {
                         {t.footer.desc}
                     </p>
                     <div className="flex gap-4">
-                        <button onClick={() => navigateTo('contact')} className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-accent transition-colors">
+                        <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-accent transition-colors">
                             <Instagram size={18} />
-                        </button>
-                        <button onClick={() => navigateTo('contact')} className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-accent transition-colors">
+                        </a>
+                        <a href={SOCIAL_LINKS.tiktok} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-accent transition-colors">
+                            <Music size={18} />
+                        </a>
+                        <a href={`mailto:${CONTACT_INFO.email1}`} className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-accent transition-colors">
                             <Mail size={18} />
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div>
@@ -603,6 +808,11 @@ const MainApp = () => {
             </div>
             <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-600 flex flex-col md:flex-row justify-between items-center gap-4">
                 <p>&copy; {new Date().getFullYear()} {t.nav.brandName}. {t.footer.rights}</p>
+                <div className="flex items-center gap-6">
+                    <button onClick={() => navigateTo('privacy')} className="hover:text-white transition-colors">Privacy Policy</button>
+                    <button onClick={() => navigateTo('returns')} className="hover:text-white transition-colors">Refund Policy</button>
+                    <button onClick={() => navigateTo('terms')} className="hover:text-white transition-colors">Terms of Service</button>
+                </div>
                 <div className="flex items-center gap-3">
                     <div className="bg-white/10 px-2 py-1 rounded flex items-center gap-1 text-xs font-bold text-gray-300">
                          <CreditCard size={14} /> VISA
@@ -614,7 +824,7 @@ const MainApp = () => {
                          <CreditCard size={14} /> PayPal
                     </div>
                 </div>
-                <p>{t.footer.tagline}</p>
+                <p>Secure Checkout Powered by PayPal</p>
             </div>
         </div>
       </footer>

@@ -11,13 +11,13 @@ export const translations = {
       faq: "FAQ",
       shipping: "Shipping",
       returns: "Returns",
-      brandName: "luckboxdiy"
+      brandName: "luckboxshop"
     },
     hero: {
       newCollection: "New Collection",
       title: "Cute & Chaos",
-      subtitle: "Lucky Boxes",
-      description: "Discover our viral storage cases and signature Lucky Boxes. Direct payment available for fee-free shopping.",
+      subtitle: "Surprise Boxes",
+      description: "Discover our viral storage cases and signature Surprise Boxes. Direct payment available for fee-free shopping.",
       cta: "Start Exploring"
     },
     home: {
@@ -35,18 +35,17 @@ export const translations = {
       securePayment: "Secure Payment",
       howToPurchase: "How to Purchase",
       payApple: "Pay with Apple Pay",
-      whatsappOrder: "WhatsApp Order",
-      tip: "You can pay directly via Bank Transfer below, or contact us on WhatsApp to pay via Apple Pay or other methods.",
+      tip: "You can pay directly via Bank Transfer below, or use PayPal for secure payment.",
       applePayModal: {
         title: "Pay with Apple Pay",
-        desc: "To pay $79.00 using Apple Pay, please contact our support team on WhatsApp. We will send you a secure payment link immediately.",
+        desc: "Apple Pay is currently not available. Please use PayPal or Bank Transfer for payment.",
         cancel: "Cancel",
-        chat: "Chat Now"
+        chat: "Close"
       }
     },
     bank: {
       title: "Payment Information",
-      subtitle: "Please use the details below to complete your bank transfer.",
+      subtitle: "Please use the following details to complete your bank transfer.",
       beneficiary: "Beneficiary",
       bankName: "Bank Name",
       accountNo: "Account No.",
@@ -62,8 +61,6 @@ export const translations = {
       title: "Contact Us",
       subtitle: "Have questions about your order or our boxes?",
       getInTouch: "Get in Touch",
-      whatsappSupport: "WhatsApp (Fastest Support)",
-      whatsappDesc: "Add us for direct order support & Apple Pay inquiries!",
       emailSupport: "Email Support",
       location: "Location",
       hours: "Working Hours",
@@ -81,9 +78,9 @@ export const translations = {
     about: {
       title: "About Us",
       content: [
-        "Welcome to luckboxdiy, your ultimate destination for cute stationery, lucky boxes, and collectible treasures!",
+        "Welcome to luckboxshop, your ultimate destination for cute stationery, surprise boxes, and collectible treasures!",
         "Founded with a passion for all things kawaii, we strive to bring joy to your doorstep with our carefully curated selection of items. Whether you are looking for the latest character accessories or the thrill of a blind scoop, we have something special for you.",
-        "We are a small, dedicated team sourcing directly from manufacturers to ensure authenticity and the best prices. Our 'Lucky Boxes' have gone viral for their generosity and variety, making every unboxing experience a surprise party."
+        "We are a small, dedicated team sourcing directly from manufacturers to ensure authenticity and the best prices. Our 'Surprise Boxes' have gone viral for their generosity and variety, making every unboxing experience a surprise party."
       ],
       promiseTitle: "Our Promise",
       promises: [
@@ -91,41 +88,130 @@ export const translations = {
       ]
     },
     shipping: {
-      title: "Shipping Policy",
-      processingTitle: "Processing Time",
-      processingDesc: "All orders are processed within 3-10 business days. Orders are not shipped or delivered on weekends or holidays.",
-      ratesTitle: "Shipping Rates",
-      ratesDesc: "Free shipping on orders over $59. Otherwise, standard international shipping rates apply and are calculated at checkout.",
-      deliveryTitle: "Estimated Delivery",
-      deliveryList: [
-        "USA & Canada: 10-20 business days",
-        "Europe: 12-25 business days",
-        "Asia Pacific: 7-15 business days"
-      ],
-      restrictedTitle: "Restricted Countries",
-      restrictedDesc: "We do not ship to the following countries due to shipping restrictions or regulations: Afghanistan, Belarus, Central African Republic, Cuba, Iran, Iraq, Libya, North Korea, Somalia, Sudan, Syria, Venezuela, Yemen, and Zimbabwe. If you place an order from these countries, we will refund your payment.",
-      availableTitle: "Available Shipping Countries",
-      availableDesc: "We currently ship to the following countries: United States, United Kingdom, Japan, Australia, New Zealand, Malaysia, Canada, Germany, France, Italy, Spain, Netherlands, Belgium, Switzerland, Sweden, Norway, Denmark, Finland, Austria, Portugal, Ireland, Poland, Czech Republic, Hungary, Slovakia, Slovenia, Croatia, Greece, Cyprus, Malta, Bulgaria, Romania, Estonia, Latvia, Lithuania, Ukraine, Russia, South Korea, Singapore, Thailand, Philippines, Indonesia, Vietnam, Hong Kong, Macau, Taiwan, India, United Arab Emirates, Saudi Arabia, Qatar, Kuwait, Bahrain, Oman, Israel, South Africa, Brazil, Chile, Mexico, and Argentina.",
-      note: "*Delivery delays can occasionally occur due to customs processing."
+      title: "Shipping Information",
+      intro: "Hello everyone! We've recently added some new countries to our shipping list. Below is the full list of countries we currently ship to. To ensure every package arrives safely and smoothly, we work with reliable carriers. As a result, some destinations have important notes—please read them carefully! If your country can easily receive international parcels but isn't on the list yet, please let me know. Thank you!",
+      regions: {
+        northAmerica: {
+          title: "North America",
+          countries: [
+            { name: "United States 🇺🇸", note: "" },
+            { name: "Canada 🇨🇦", note: "We do not accept bulk orders. Each order can include up to 2 Lucky Spoon or 2 Surprise Box only. The recipient's full name must be provided; abbreviations or only a first or last name are not allowed. In addition, for the same recipient, only one order per week is accepted. Please note that it is strictly prohibited to use company, warehouse, hotel, restaurant, or any other commercial institution name as the recipient. Names containing terms such as \"Inc.\", \"LTD\", or \"Corporation\" are not allowed." },
+            { name: "Mexico 🇲🇽", note: "" }
+          ]
+        },
+        europe: {
+          title: "Europe",
+          countries: [
+            { name: "France 🇫🇷", note: "" },
+            { name: "United Kingdom 🇬🇧", note: "" },
+            { name: "Germany 🇩🇪", note: "" },
+            { name: "Italy 🇮🇹", note: "" },
+            { name: "Spain 🇪🇸", note: "" },
+            { name: "Netherlands 🇳🇱", note: "" },
+            { name: "Belgium 🇧🇪", note: "" },
+            { name: "Austria 🇦🇹", note: "" },
+            { name: "Czech Republic 🇨🇿", note: "" },
+            { name: "Romania 🇷🇴", note: "" },
+            { name: "Slovakia 🇸🇰", note: "" },
+            { name: "Hungary 🇭🇺", note: "" },
+            { name: "Norway 🇳🇴", note: "" },
+            { name: "Luxembourg 🇱🇺", note: "" },
+            { name: "Cyprus 🇨🇾", note: "" },
+            { name: "Bulgaria 🇧🇬", note: "" },
+            { name: "Croatia 🇭🇷", note: "" },
+            { name: "Sweden 🇸🇪", note: "Some carriers only offer delivery via pick-up (pick-up points or lockers). Recipients must provide accurate and complete contact information to avoid delivery failure." },
+            { name: "Denmark 🇩🇰", note: "Some carriers only offer delivery via pick-up (pick-up points or lockers). Recipients must provide accurate and complete contact information to avoid delivery failure." },
+            { name: "Finland 🇫🇮", note: "Some carriers only offer delivery via pick-up (pick-up points or lockers). Recipients must provide accurate and complete contact information to avoid delivery failure." },
+            { name: "Estonia 🇪🇪", note: "Some carriers only offer delivery via pick-up (pick-up points or lockers). Recipients must provide accurate and complete contact information to avoid delivery failure." },
+            { name: "Latvia 🇱🇻", note: "Some carriers only offer delivery via pick-up (pick-up points or lockers). Recipients must provide accurate and complete contact information to avoid delivery failure." },
+            { name: "Lithuania 🇱🇹", note: "Some carriers only offer delivery via pick-up (pick-up points or lockers). Recipients must provide accurate and complete contact information to avoid delivery failure." },
+            { name: "Poland 🇵🇱", note: "Packstation addresses are only supported in Warsaw, Wroclaw, Poznan, and Krakow." },
+            { name: "Portugal 🇵🇹", note: "PO BOX addresses are not accepted." },
+            { name: "Greece 🇬🇷", note: "PO BOX addresses are not accepted." },
+            { name: "Switzerland 🇨🇭", note: "If a recipient's total parcels received in one day exceed 62 CHF, customs will charge the recipient additional VAT and duties." },
+            { name: "Ireland 🇮🇪", note: "We do not accept large orders and only accept orders with a size of up to 2 Lucky Spoons or 2 Surprise Boxes per package." }
+          ]
+        },
+        asia: {
+          title: "Asia",
+          countries: [
+            { name: "Singapore 🇸🇬", note: "" },
+            { name: "Malaysia 🇲🇾", note: "" },
+            { name: "Philippines 🇵🇭", note: "" },
+            { name: "Thailand 🇹🇭", note: "" },
+            { name: "Vietnam 🇻🇳", note: "" },
+            { name: "South Korea 🇰🇷", note: "We do not accept bulk orders. Each order can include up to 1 Lucky Spoon or 1 Surprise Box only. The recipient's name, address, and other shipping details must be written in Korean. The Korean customs office now requires the recipient's ID and personal customs clearance code (PCCC), and the information must fully match the details registered with customs, including: recipient's name, phone number and shipping address. (The clearance code format is P + 12 digits, e.g., P123456789012) Please add this information to the order notes when placing your order." },
+            { name: "Japan 🇯🇵", note: "We only accept parcels intended for personal use. Recipient addresses must not be commercial facilities (such as companies, warehouses, restaurants, hotels, etc.). Any losses caused by customs identifying the recipient's address as a commercial address will be borne by the recipient. It is recommended to write your name and address in Japanese. This will make it easier to fill in the shipping information and help the local delivery personnel deliver accurately. The recipient's name must be the full name and cannot be an abbreviation or only the first or last name; otherwise, customs clearance may be affected, resulting in unnecessary delays." },
+            { name: "Israel 🇮🇱", note: "Gaza Strip is not reachable. Delivery is normally made to your door. Please make sure to provide a precise address and an accurate phone number. If you prefer to pick up your package at a \"pickup point\", please contact us." },
+            { name: "United Arab Emirates 🇦🇪", note: "PO BOX addresses are not accepted. Please make sure to provide a precise address and an accurate phone number." },
+            { name: "Saudi Arabia 🇸🇦", note: "We do not accept bulk orders. Each order can include up to 2 Lucky Spoon or 2 Surprise Box only. PO BOX addresses are not accepted. Please make sure to provide a precise address, an accurate phone number and a valid Short Address. The Short Address consists of 4 letters + 4 numbers, for example: RAGI2929. The Short Address can be obtained through the following methods for reference: 1. Via the Saudi Post (SPL) official website: https://splonline.com.sa/ar/ ; 2. By calling the automated hotline: +966 11 289 88888" },
+            { name: "Kuwait 🇰🇼", note: "PO BOX addresses are not accepted. Please make sure to provide a precise address and an accurate phone number." },
+            { name: "Qatar 🇶🇦", note: "PO BOX addresses are not accepted. Please make sure to provide a precise address and an accurate phone number." }
+          ]
+        },
+        australia: {
+          title: "Australia",
+          countries: [
+            { name: "Australia 🇦🇺", note: "" },
+            { name: "New Zealand 🇳🇿", note: "" }
+          ]
+        }
+      }
     },
     returns: {
-      title: "Return Policy",
-      note: "Please review our return policy carefully before placing your order.",
-      standardTitle: "Before Shipment (24 Hours)",
-      standardDesc: "If your order has not been shipped, you can request a full refund within 24 hours of placing your order by contacting us via email or WhatsApp.",
-      deliveredTitle: "After Delivery (Unopened Package)",
-      deliveredDesc: "If you have received your order but the package remains unopened and undamaged, you may request a return and refund within 7 days of receipt.",
-      openedTitle: "Opened or Used Items",
-      openedDesc: "Once the package has been opened or the items have been used, we cannot accept returns or provide refunds.",
-      damagedTitle: "Damaged Items",
-      damagedDesc: "If your item arrives damaged, please contact us immediately via email or WhatsApp and include photos of the package and the damaged item. We will arrange a replacement or refund."
+      title: "Purchase & After-Sales Policy",
+      intro: "For customers who have placed an order, we assume you have read and agreed to the following terms.",
+      contact: {
+        title: "📧 Contact Us",
+        desc: "If you have any questions, please contact us by email only. Due to the large volume of spam and promotional messages on social media platforms, customer messages can easily get lost. We'll reply to all emails within 24 hours."
+      },
+      shipping: {
+        title: "🚚 Shipping & Delivery",
+        cancellation: {
+          title: "Order Cancellation:",
+          desc: "Once an order is placed, cancellation or refund requests without valid reasons are not supported. If you email us before the parcel is shipped and have a special reason to cancel, we'll review your case and may approve the cancellation and refund."
+        },
+        address: {
+          title: "Shipping Address:",
+          desc: "Once a parcel has been shipped, the delivery address cannot be modified. If you realize there's an error in your address after placing the order, please email us immediately. Please ensure your address is accurate and complete — ideally, one that can be located on Google Maps. If your address is an apartment, please include your floor and room number. If the parcel cannot be delivered due to inaccurate or incomplete address information, or because the delivery person cannot access the property, you will need to contact the local courier directly. We will, however, do our best to assist you in communicating with the courier to resolve the issue. If the parcel is returned to the logistics warehouse because of an address issue, we can help arrange a reshipment (within the same city only). Any reshipment fee will need to be covered by the buyer."
+        },
+        verification: {
+          title: "Address Verification Before Shipping:",
+          desc: "Before dispatching, we'll review all shipping addresses to ensure they are accurate. If we find missing or incorrect information, we'll email you for confirmation or help you correct it. If you do not respond within 3 days, your order will be cancelled and fully refunded."
+        },
+        lost: {
+          title: "Lost Parcels:",
+          desc: "We regularly track shipments. If a parcel is confirmed lost in transit, we'll proactively contact you to arrange a replacement or full refund."
+        },
+        notReceived: {
+          title: "Delivered but Not Received:",
+          desc: "If the tracking status shows \"delivered\" and the courier has provided proof of delivery, but you claim not to have received it, we recommend filing a police report. We are willing to fully cooperate with the investigation."
+        }
+      },
+      notes: {
+        title: "📝 Order Notes",
+        desc: "You can leave a note during checkout to specify your personal preferences. We'll do our best to pack according to your notes, but we cannot guarantee every request can be fulfilled. If you forgot to leave a note or are unsure whether your note was saved, please email us immediately. If your parcel hasn't been shipped yet, we can still update your note."
+      },
+      confirmation: {
+        title: "📩 Order Confirmation Email",
+        desc: "After placing your order, our website will automatically send an order confirmation email to the address you entered at checkout. This email includes details such as purchased items, shipping address, email, phone number, and any notes. Please check and confirm that all information is correct. If you find any errors, email us within 2 hours — because once the parcel is shipped, we can no longer change your address, note, or contact info. Any delivery issues caused by incorrect address, missing notes, or wrong product selection during checkout are the buyer's responsibility. If you didn't receive the confirmation email, please check your spam folder first. If it's not there, contact us via email to verify your order details."
+      },
+      oneBox: {
+        title: "📦 One Box per Order",
+        desc: "Each order is packed into one box by default. If you ordered multiple scoops and want them packed into separate boxes, please clearly indicate that in your order note."
+      },
+      additional: {
+        title: "🕒 Additional Info",
+        processingTime: "Processing time: See FAQ section on our homepage.",
+        shippingTime: "Shipping time: See FAQ section on our homepage."
+      }
     },
     faq: {
       title: "Frequently Asked Questions",
       items: [
-        { q: "What's inside a Lucky Box?", a: "Each Lucky Box comes with a specific theme—choose the one you love! Every box includes 15 balls, representing 15 gifts. Items are randomly selected. If you have a special wish, add a note at checkout; we will try our best (not guaranteed)." },
-        { q: "Do you ship internationally?", a: "Yes, we ship to most countries worldwide. Please see our Shipping Policy for timelines. If, after receiving payment, we cannot ship your order, we will refund you—no worries." },
-        { q: "How do I pay?", a: "We accept multiple payment methods including Direct Bank Transfer, PayPal, Apple Pay, and credit/debit cards. For Apple Pay, please contact us via WhatsApp to complete your payment." },
+        { q: "What's inside a Surprise Box?", a: "Each Surprise Box comes with a specific theme—choose the one you love! Every box includes 15 cute gifts. Items are randomly selected. If you have a special wish, add a note at checkout; we will try our best (not guaranteed)." },
+        { q: "Do you ship internationally?", a: "Yes, we ship to many countries worldwide. Please see our Shipping Information for details. If, after receiving payment, we cannot ship your order, we will refund you—no worries." },
+        { q: "How do I pay?", a: "We accept multiple payment methods including Direct Bank Transfer, PayPal, and credit/debit cards." },
         { q: "Can I request specific items?", a: "The fun is in the surprise! You can leave a note at checkout with preferences; we will try our best." }
       ]
     },
@@ -136,157 +222,13 @@ export const translations = {
       note: "Tracking information typically becomes available 2-3 days after your order has been processed."
     },
     footer: {
-      desc: "Bringing you the cutest stationery and lucky boxes. Secure direct payments and worldwide shipping.",
+      desc: "Bringing you the cutest stationery and surprise boxes. Secure direct payments and worldwide shipping.",
       care: "Customer Care",
       newsletter: "Newsletter",
-      subDesc: "Subscribe to get notified about new lucky box drops!",
+      subDesc: "Subscribe to get notified about new surprise box drops!",
       join: "Join",
       rights: "All rights reserved.",
-      tagline: "Designed for lucky box lovers everywhere."
-    }
-  },
-  zh: {
-    nav: {
-      home: "首页",
-      all: "所有商品",
-      about: "关于我们",
-      contact: "联系客服",
-      track: "订单追踪",
-      faq: "常见问题",
-      shipping: "发货说明",
-      returns: "退换货",
-      brandName: "luckboxdiy"
-    },
-    hero: {
-      newCollection: "新品上市",
-      title: "可爱与惊喜",
-      subtitle: "幸运盒子",
-      description: "探索我们爆火的收纳盒和招牌幸运盒子。支持直接转账，购物无手续费。",
-      cta: "开始探索"
-    },
-    home: {
-      trending: "热销商品",
-      items: "件商品"
-    },
-    product: {
-      back: "返回列表",
-      reviews: "条评价",
-      sale: "特价",
-      viewDetails: "查看详情",
-      price: "价格",
-      buyerProtection: "买家保障",
-      fastShipping: "快速发货",
-      securePayment: "安全支付",
-      howToPurchase: "如何购买",
-      payApple: "使用 Apple Pay",
-      whatsappOrder: "WhatsApp 下单",
-      tip: "您可以通过下方银行转账直接付款，或通过 WhatsApp 联系我们使用 Apple Pay 或其他方式支付。",
-      applePayModal: {
-        title: "使用 Apple Pay 支付",
-        desc: "如需使用 Apple Pay 支付 $79.00，请通过 WhatsApp 联系客服。我们将立即为您发送安全支付链接。",
-        cancel: "取消",
-        chat: "立即联系"
-      }
-    },
-    bank: {
-      title: "付款信息",
-      subtitle: "请使用以下信息完成银行转账。",
-      beneficiary: "收款人",
-      bankName: "银行名称",
-      accountNo: "账号",
-      swift: "SWIFT / BIC 代码",
-      country: "国家",
-      province: "省/州",
-      city: "城市",
-      fullAddress: "详细地址",
-      footer: "请在转账备注中包含您的订单参考号。",
-      copy: "复制"
-    },
-    contact: {
-      title: "联系我们",
-      subtitle: "对订单或商品有疑问？",
-      getInTouch: "联系方式",
-      whatsappSupport: "WhatsApp (最快回复)",
-      whatsappDesc: "添加我们获取订单支持及 Apple Pay 咨询！",
-      emailSupport: "邮件支持",
-      location: "地址",
-      hours: "工作时间",
-      form: {
-        name: "姓名",
-        email: "邮箱",
-        orderNo: "订单号 (选填)",
-        message: "留言内容",
-        send: "发送信息",
-        sentTitle: "发送成功！",
-        sentDesc: "感谢您的联系。我们的客服团队将在24小时内回复。",
-        returnHome: "返回首页"
-      }
-    },
-    about: {
-      title: "关于我们",
-      content: [
-        "欢迎来到 luckboxdiy，这里是可爱文具、幸运盒子和收藏珍品的终极目的地！",
-        "出于对所有可爱事物的热爱，我们致力于通过精心挑选的商品为您带来快乐。无论您是在寻找最新的角色周边配件，还是体验幸运盒子的惊喜，我们都有适合您的特别好物。",
-        "我们是一个位于亚洲的小型专注团队，直接从制造商采购，以确保更优价格与稳定供货。我们的“幸运盒子”因内容丰富、诚意十足而走红，让每一次开箱都像派对一样开心。"
-      ],
-      promiseTitle: "我们的承诺",
-      promises: [
-        "我们保证每个商品精心包装，精准送达。"
-      ]
-    },
-    shipping: {
-      title: "发货政策",
-      processingTitle: "处理时间",
-      processingDesc: "所有订单将在 3–10 个工作日内处理。周末或节假日不发货。",
-      ratesTitle: "运费",
-      ratesDesc: "订单满 $59 包邮；其余订单按标准国际运费收取，费用将在结账时计算并显示。",
-      deliveryTitle: "预计送达时间",
-      deliveryList: [
-        "美国和加拿大: 10-20 个工作日",
-        "欧洲: 12-25 个工作日",
-        "亚太地区: 7-15 个工作日"
-      ],
-      restrictedTitle: "限制发货国家",
-      restrictedDesc: "由于运输限制或法规原因，我们不向以下国家发货：阿富汗、白俄罗斯、中非共和国、古巴、伊朗、伊拉克、利比亚、朝鲜、索马里、苏丹、叙利亚、委内瑞拉、也门和津巴布韦。如果您从这些国家下订单，我们将退还您的付款。",
-      availableTitle: "可发货国家",
-      availableDesc: "我们目前向以下国家发货：美国、英国、日本、澳大利亚、新西兰、马来西亚、加拿大、德国、法国、意大利、西班牙、荷兰、比利时、瑞士、瑞典、挪威、丹麦、芬兰、奥地利、葡萄牙、爱尔兰、波兰、捷克共和国、匈牙利、斯洛伐克、斯洛文尼亚、克罗地亚、希腊、塞浦路斯、马耳他、保加利亚、罗马尼亚、爱沙尼亚、拉脱维亚、立陶宛、乌克兰、俄罗斯、韩国、新加坡、泰国、菲律宾、印度尼西亚、越南、香港、澳门、台湾、印度、阿联酋、沙特阿拉伯、卡塔尔、科威特、巴林、阿曼、以色列、南非、巴西、智利、墨西哥和阿根廷。",
-      note: "*由于海关处理，偶尔可能会出现延误。"
-    },
-    returns: {
-      title: "退换货政策",
-      note: "请在下单前仔细阅读我们的退换货政策。",
-      standardTitle: "未发货（24小时内）",
-      standardDesc: "如果您的订单尚未发货，您可以在下单后24小时内通过邮件或 WhatsApp 联系我们申请全额退款。",
-      deliveredTitle: "已送达（未开封包裹）",
-      deliveredDesc: "如果您已收到订单，但包裹仍未开封且未损坏，您可以在收到后7天内申请退货和退款。",
-      openedTitle: "已开封或已使用的商品",
-      openedDesc: "一旦包裹被开封或商品被使用，我们将不接受退货或提供退款。",
-      damagedTitle: "破损商品",
-      damagedDesc: "如果您的商品在送达时已损坏，请立即通过邮件或 WhatsApp 联系我们，并附上包裹和损坏商品的图片。我们将尽快安排补发或退款。"
-    },
-    faq: {
-      title: "常见问题",
-      items: [
-        { q: "幸运盒子里面都有什么？", a: "每个幸运盒子都有对应的一个主题，您可以选择自己喜欢的主题进行购买。每个盒子有 15 个球，也就代表着有 15 个礼物，礼物为随机组合。如果您特别想要某个物品，可以在下单时备注，我们会尽力为您许愿（不保证一定成功）。" },
-        { q: "你们支持全球发货吗？", a: "是的，我们发往全球大多数国家，具体时效请查看发货政策。如果在收到款项后我们无法为您发货，我们会退还该费用，请放心。" },
-        { q: "如何付款？", a: "我们接受多种支付方式，包括银行转账、PayPal、Apple Pay 和信用卡/借记卡。对于 Apple Pay，请通过 WhatsApp 联系我们完成支付。" },
-        { q: "我可以许愿特定商品吗？", a: "盲盒的乐趣在于惊喜！不过，您可以在结账时备注您的喜好（例如“喜欢紫色”或“不要贴纸”），我们会尽力满足，但不保证一定有。" }
-      ]
-    },
-    track: {
-      title: "追踪订单",
-      desc: "下单时请提供您的电话号码，并确保您的电子邮件地址正确，以便我们在订单出现任何问题时能够快速联系到您。此外，请仔细核对您的收货地址是否准确。如果地址在建筑物内，请务必包含楼层和房间号（或公寓号），因为如果地址不够清晰，一些本地快递员可能无法找到您的地址，甚至可能拒收。任何其他特殊要求只能在下单时的结账备注中添加，或者在下单后2小时内通过电子邮件发送给我们。",
-      placeholder: "订单号 (例如 JP-8821)",
-      note: "物流信息通常在订单处理后 2-3 天内更新。"
-    },
-    footer: {
-      desc: "为您带来最可爱的文具和幸运盒子。支持安全直接付款和全球发货。",
-      care: "客户服务",
-      newsletter: "订阅我们",
-      subDesc: "订阅以获取幸运盒子上新通知！",
-      join: "加入",
-      rights: "版权所有。",
-      tagline: "专为幸运盒子爱好者设计。"
+      tagline: "Designed for surprise box lovers everywhere."
     }
   },
   es: {
@@ -304,8 +246,8 @@ export const translations = {
     hero: {
       newCollection: "Nueva Colección",
       title: "Lindo y Caos",
-      subtitle: "Cajas de la Suerte",
-      description: "Descubre nuestros estuches virales y cajas de la suerte. Pago directo disponible sin comisiones.",
+      subtitle: "Cajas de Sorpresa",
+      description: "Descubre nuestros estuches virales y cajas de sorpresa. Pago directo disponible sin comisiones.",
       cta: "Empezar a Buscar"
     },
     home: {
@@ -323,13 +265,12 @@ export const translations = {
       securePayment: "Pago Seguro",
       howToPurchase: "Cómo Comprar",
       payApple: "Pagar con Apple Pay",
-      whatsappOrder: "Pedir por WhatsApp",
-      tip: "Puede pagar directamente mediante transferencia bancaria a continuación, o contactarnos por WhatsApp para pagar con Apple Pay u otros métodos.",
+      tip: "Puede pagar directamente mediante transferencia bancaria a continuación, o usar PayPal para un pago seguro.",
       applePayModal: {
         title: "Pagar con Apple Pay",
-        desc: "Para pagar $79.00 usando Apple Pay, contacte a nuestro soporte en WhatsApp. Le enviaremos un enlace de pago seguro inmediatamente.",
+        desc: "Apple Pay no está disponible actualmente. Por favor use PayPal o Transferencia Bancaria para el pago.",
         cancel: "Cancelar",
-        chat: "Chatear Ahora"
+        chat: "Cerrar"
       }
     },
     bank: {
@@ -350,9 +291,7 @@ export const translations = {
       title: "Contáctenos",
       subtitle: "¿Tiene preguntas sobre su pedido?",
       getInTouch: "Póngase en contacto",
-      whatsappSupport: "WhatsApp (Soporte Rápido)",
-      whatsappDesc: "¡Agréguenos para soporte directo y consultas de Apple Pay!",
-      emailSupport: "Soporte por Correo",
+      emailSupport: "Soporte por Email",
       location: "Ubicación",
       hours: "Horario Laboral",
       form: {
@@ -369,7 +308,7 @@ export const translations = {
     about: {
       title: "Sobre Nosotros",
       content: [
-        "¡Bienvenido a luckboxdiy, tu destino definitivo para papelería linda, cajas de la suerte y tesoros coleccionables!",
+        "¡Bienvenido a luckboxshop, tu destino definitivo para papelería linda, cajas de sorpresa y tesoros coleccionables!",
         "Fundada con pasión por todo lo kawaii, nos esforzamos por traer alegría a tu puerta con nuestra selección cuidadosamente curada. Ya sea que busques los últimos accesorios o la emoción de un scoop sorpresa, tenemos algo especial para ti.",
         "Somos un equipo pequeño y dedicado en Asia, que compra directamente a los fabricantes para garantizar autenticidad y los mejores precios."
       ],
@@ -379,41 +318,130 @@ export const translations = {
       ]
     },
     shipping: {
-      title: "Política de Envíos",
-      processingTitle: "Tiempo de Procesamiento",
-      processingDesc: "Todos los pedidos se procesan dentro de 3–10 días hábiles. No se envían fines de semana ni festivos.",
-      ratesTitle: "Tarifas de Envío",
-      ratesDesc: "Envío gratis en pedidos superiores a $59. De lo contrario, aplican tarifas internacionales estándar calculadas al finalizar la compra.",
-      deliveryTitle: "Entrega Estimada",
-      deliveryList: [
-        "EE.UU. y Canadá: 10-20 días hábiles",
-        "Europa: 12-25 días hábiles",
-        "Asia Pacífico: 7-15 días hábiles"
-      ],
-      restrictedTitle: "Países Restringidos",
-      restrictedDesc: "No enviamos a los siguientes países debido a restricciones de envío o regulaciones: Afganistán, Bielorrusia, República Centroafricana, Cuba, Irán, Irak, Libia, Corea del Norte, Somalia, Sudán, Siria, Venezuela, Yemen y Zimbabue. Si realiza un pedido desde estos países, le reembolsaremos el pago.",
-      availableTitle: "Países Disponibles para Envío",
-      availableDesc: "Actualmente enviamos a los siguientes países: Estados Unidos, Reino Unido, Japón, Australia, Nueva Zelanda, Malasia, Canadá, Alemania, Francia, Italia, España, Países Bajos, Bélgica, Suiza, Suecia, Noruega, Dinamarca, Finlandia, Austria, Portugal, Irlanda, Polonia, República Checa, Hungría, Eslovaquia, Eslovenia, Croacia, Grecia, Chipre, Malta, Bulgaria, Rumanía, Estonia, Letonia, Lituania, Ucrania, Rusia, Corea del Sur, Singapur, Tailandia, Filipinas, Indonesia, Vietnam, Hong Kong, Macao, Taiwán, India, Emiratos Árabes Unidos, Arabia Saudita, Catar, Kuwait, Baréin, Omán, Israel, Sudáfrica, Brasil, Chile, México y Argentina.",
-      note: "*Pueden ocurrir retrasos ocasionales debido a trámites aduaneros."
+      title: "Información de Envío",
+      intro: "¡Hola a todos! Recientemente hemos agregado algunos países nuevos a nuestra lista de envíos. A continuación, se muestra la lista completa de países a los que actualmente enviamos. Para garantizar que cada paquete llegue de forma segura y sin problemas, trabajamos con transportistas confiables. Como resultado, algunos destinos tienen notas importantes: ¡léelas cuidadosamente! Si tu país puede recibir paquetes internacionales fácilmente pero aún no está en la lista, por favor hazme saber. ¡Gracias!",
+      regions: {
+        northAmerica: {
+          title: "América del Norte",
+          countries: [
+            { name: "Estados Unidos 🇺🇸", note: "" },
+            { name: "Canadá 🇨🇦", note: "No aceptamos pedidos al por mayor. Cada pedido puede incluir hasta 2 Lucky Spoon o 2 Caja de Sorpresa solamente. Debe proporcionarse el nombre completo del destinatario; no se permiten abreviaturas ni solo un nombre o apellido. Además, para el mismo destinatario, solo se acepta un pedido por semana. Tenga en cuenta que está estrictamente prohibido usar el nombre de una empresa, almacén, hotel, restaurante o cualquier otra institución comercial como destinatario. No se permiten nombres que contengan términos como \"Inc.\", \"LTD\" o \"Corporation\"." },
+            { name: "México 🇲🇽", note: "" }
+          ]
+        },
+        europe: {
+          title: "Europa",
+          countries: [
+            { name: "Francia 🇫🇷", note: "" },
+            { name: "Reino Unido 🇬🇧", note: "" },
+            { name: "Alemania 🇩🇪", note: "" },
+            { name: "Italia 🇮🇹", note: "" },
+            { name: "España 🇪🇸", note: "" },
+            { name: "Países Bajos 🇳🇱", note: "" },
+            { name: "Bélgica 🇧🇪", note: "" },
+            { name: "Austria 🇦🇹", note: "" },
+            { name: "República Checa 🇨🇿", note: "" },
+            { name: "Rumania 🇷🇴", note: "" },
+            { name: "Eslovaquia 🇸🇰", note: "" },
+            { name: "Hungría 🇭🇺", note: "" },
+            { name: "Noruega 🇳🇴", note: "" },
+            { name: "Luxemburgo 🇱🇺", note: "" },
+            { name: "Chipre 🇨🇾", note: "" },
+            { name: "Bulgaria 🇧🇬", note: "" },
+            { name: "Croacia 🇭🇷", note: "" },
+            { name: "Suecia 🇸🇪", note: "Algunos transportistas solo ofrecen entrega mediante recogida (puntos de recogida o lockers). Los destinatarios deben proporcionar información de contacto precisa y completa para evitar fallos en la entrega." },
+            { name: "Dinamarca 🇩🇰", note: "Algunos transportistas solo ofrecen entrega mediante recogida (puntos de recogida o lockers). Los destinatarios deben proporcionar información de contacto precisa y completa para evitar fallos en la entrega." },
+            { name: "Finlandia 🇫🇮", note: "Algunos transportistas solo ofrecen entrega mediante recogida (puntos de recogida o lockers). Los destinatarios deben proporcionar información de contacto precisa y completa para evitar fallos en la entrega." },
+            { name: "Estonia 🇪🇪", note: "Algunos transportistas solo ofrecen entrega mediante recogida (puntos de recogida o lockers). Los destinatarios deben proporcionar información de contacto precisa y completa para evitar fallos en la entrega." },
+            { name: "Letonia 🇱🇻", note: "Algunos transportistas solo ofrecen entrega mediante recogida (puntos de recogida o lockers). Los destinatarios deben proporcionar información de contacto precisa y completa para evitar fallos en la entrega." },
+            { name: "Lituania 🇱🇹", note: "Algunos transportistas solo ofrecen entrega mediante recogida (puntos de recogida o lockers). Los destinatarios deben proporcionar información de contacto precisa y completa para evitar fallos en la entrega." },
+            { name: "Polonia 🇵🇱", note: "Las direcciones de Packstation solo son compatibles en Varsovia, Breslavia, Poznan y Cracovia." },
+            { name: "Portugal 🇵🇹", note: "No se aceptan direcciones de PO BOX." },
+            { name: "Grecia 🇬🇷", note: "No se aceptan direcciones de PO BOX." },
+            { name: "Suiza 🇨🇭", note: "Si los paquetes totales recibidos por un destinatario en un día superan los 62 CHF, la aduana cobrará al destinatario IVA y aranceles adicionales." },
+            { name: "Irlanda 🇮🇪", note: "No aceptamos pedidos grandes y solo aceptamos pedidos con un tamaño de hasta 2 Lucky Spoons o 2 Cajas de Sorpresa por paquete." }
+          ]
+        },
+        asia: {
+          title: "Asia",
+          countries: [
+            { name: "Singapur 🇸🇬", note: "" },
+            { name: "Malasia 🇲🇾", note: "" },
+            { name: "Filipinas 🇵🇭", note: "" },
+            { name: "Tailandia 🇹🇭", note: "" },
+            { name: "Vietnam 🇻🇳", note: "" },
+            { name: "Corea del Sur 🇰🇷", note: "No aceptamos pedidos al por mayor. Cada pedido puede incluir hasta 1 Lucky Spoon o 1 Caja de Sorpresa solamente. El nombre del destinatario, la dirección y otros detalles de envío deben estar escritos en coreano. La oficina de aduanas coreana ahora requiere el ID del destinatario y el código personal de despacho aduanero (PCCC), y la información debe coincidir completamente con los detalles registrados en la aduana, incluyendo: nombre del destinatario, número de teléfono y dirección de envío. (El formato del código de despacho es P + 12 dígitos, por ejemplo: P123456789012) Por favor, agregue esta información en las notas del pedido al realizarlo." },
+            { name: "Japón 🇯🇵", note: "Solo aceptamos paquetes destinados para uso personal. Las direcciones de los destinatarios no deben ser instalaciones comerciales (como empresas, almacenes, restaurantes, hoteles, etc.). Cualquier pérdida causada por la aduana al identificar la dirección del destinatario como dirección comercial será responsabilidad del destinatario. Se recomienda escribir su nombre y dirección en japonés. Esto facilitará completar la información de envío y ayudará al personal de entrega local a entregar con precisión. El nombre del destinatario debe ser el nombre completo y no puede ser una abreviatura ni solo el nombre o el apellido; de lo contrario, el despacho aduanero puede verse afectado, lo que resultaría en retrasos innecesarios." },
+            { name: "Israel 🇮🇱", note: "La Franja de Gaza no es accesible. La entrega se realiza normalmente en su puerta. Por favor, asegúrese de proporcionar una dirección precisa y un número de teléfono exacto. Si prefiere recoger su paquete en un \"punto de recogida\", por favor contáctenos." },
+            { name: "Emiratos Árabes Unidos 🇦🇪", note: "No se aceptan direcciones de PO BOX. Por favor, asegúrese de proporcionar una dirección precisa y un número de teléfono exacto." },
+            { name: "Arabia Saudita 🇸🇦", note: "No aceptamos pedidos al por mayor. Cada pedido puede incluir hasta 2 Lucky Spoon o 2 Caja de Sorpresa solamente. No se aceptan direcciones de PO BOX. Por favor, asegúrese de proporcionar una dirección precisa, un número de teléfono exacto y una Dirección Corta válida. La Dirección Corta consta de 4 letras + 4 números, por ejemplo: RAGI2929. La Dirección Corta se puede obtener a través de los siguientes métodos para referencia: 1. A través del sitio web oficial de Saudi Post (SPL): https://splonline.com.sa/ar/ ; 2. Llamando a la línea telefónica automatizada: +966 11 289 88888" },
+            { name: "Kuwait 🇰🇼", note: "No se aceptan direcciones de PO BOX. Por favor, asegúrese de proporcionar una dirección precisa y un número de teléfono exacto." },
+            { name: "Catar 🇶🇦", note: "No se aceptan direcciones de PO BOX. Por favor, asegúrese de proporcionar una dirección precisa y un número de teléfono exacto." }
+          ]
+        },
+        australia: {
+          title: "Australia",
+          countries: [
+            { name: "Australia 🇦🇺", note: "" },
+            { name: "Nueva Zelanda 🇳🇿", note: "" }
+          ]
+        }
+      }
     },
     returns: {
-      title: "Política de Devoluciones",
-      note: "Por favor, revise nuestra política de devoluciones cuidadosamente antes de realizar su pedido.",
-      standardTitle: "Antes del Envío (24 Horas)",
-      standardDesc: "Si su pedido no ha sido enviado, puede solicitar un reembolso completo dentro de las 24 horas posteriores a la realización del pedido contactándonos por correo electrónico o WhatsApp.",
-      deliveredTitle: "Después de la Entrega (Paquete Sin Abrir)",
-      deliveredDesc: "Si ha recibido su pedido pero el paquete permanece sin abrir y sin daños, puede solicitar una devolución y reembolso dentro de los 7 días posteriores a la recepción.",
-      openedTitle: "Artículos Abiertos o Utilizados",
-      openedDesc: "Una vez que el paquete ha sido abierto o los artículos han sido utilizados, no podemos aceptar devoluciones ni proporcionar reembolsos.",
-      damagedTitle: "Artículos Dañados",
-      damagedDesc: "Si su artículo llega dañado, contáctenos de inmediato por correo electrónico o WhatsApp e incluya fotos del paquete y del artículo dañado. Organizaremos un reemplazo o reembolso."
+      title: "Política de Compra y Posventa",
+      intro: "Para clientes que han realizado un pedido, asumimos que han leído y aceptado los siguientes términos.",
+      contact: {
+        title: "📧 Contáctenos",
+        desc: "Si tiene alguna pregunta, por favor contáctenos solo por correo electrónico. Debido al gran volumen de spam y mensajes promocionales en plataformas de redes sociales, los mensajes de clientes pueden perderse fácilmente. Responderemos a todos los correos dentro de 24 horas."
+      },
+      shipping: {
+        title: "🚚 Envío y Entrega",
+        cancellation: {
+          title: "Cancelación de Pedido:",
+          desc: "Una vez realizado un pedido, no se admiten solicitudes de cancelación o reembolso sin razones válidas. Si nos envía un correo antes de que el paquete sea enviado y tiene una razón especial para cancelar, revisaremos su caso y podremos aprobar la cancelación y el reembolso."
+        },
+        address: {
+          title: "Dirección de Envío:",
+          desc: "Una vez que un paquete ha sido enviado, la dirección de entrega no puede modificarse. Si detecta un error en su dirección después de realizar el pedido, por favor envíenos un correo inmediatamente. Asegúrese de que su dirección sea precisa y completa — idealmente, una que pueda ubicarse en Google Maps. Si su dirección es un apartamento, por favor incluya su piso y número de habitación. Si el paquete no puede ser entregado debido a información de dirección inexacta o incompleta, o porque el repartidor no puede acceder a la propiedad, deberá contactar directamente al mensajero local. Sin embargo, haremos todo lo posible para asistirle en la comunicación con el mensajero para resolver el problema. Si el paquete es devuelto al almacén logístico debido a un problema de dirección, podemos ayudar a organizar un reenvío (solo dentro de la misma ciudad). Cualquier tarifa de reenvío deberá ser cubierta por el comprador."
+        },
+        verification: {
+          title: "Verificación de Dirección Antes del Envío:",
+          desc: "Antes de despachar, revisaremos todas las direcciones de envío para asegurarnos de que sean precisas. Si encontramos información faltante o incorrecta, le enviaremos un correo para confirmación o ayudarle a corregirla. Si no responde dentro de 3 días, su pedido será cancelado y reembolsado completamente."
+        },
+        lost: {
+          title: "Paquetes Perdidos:",
+          desc: "Rastreamos regularmente los envíos. Si se confirma que un paquete se perdió en tránsito, le contactaremos proactivamente para organizar un reemplazo o reembolso completo."
+        },
+        notReceived: {
+          title: "Entregado pero No Recibido:",
+          desc: "Si el estado de rastreo muestra \"entregado\" y el mensajero ha proporcionado prueba de entrega, pero usted afirma no haberlo recibido, recomendamos presentar un informe policial. Estamos dispuestos a cooperar completamente con la investigación."
+        }
+      },
+      notes: {
+        title: "📝 Notas del Pedido",
+        desc: "Puede dejar una nota durante el pago para especificar sus preferencias personales. Haremos todo lo posible para empacar según sus notas, pero no podemos garantizar que cada solicitud pueda cumplirse. Si olvidó dejar una nota o no está seguro de si su nota fue guardada, por favor envíenos un correo inmediatamente. Si su paquete aún no ha sido enviado, aún podemos actualizar su nota."
+      },
+      confirmation: {
+        title: "📩 Correo de Confirmación de Pedido",
+        desc: "Después de realizar su pedido, nuestro sitio web enviará automáticamente un correo de confirmación de pedido a la dirección que ingresó en el pago. Este correo incluye detalles como artículos comprados, dirección de envío, correo, número de teléfono y cualquier nota. Por favor revise y confirme que toda la información sea correcta. Si encuentra algún error, envíenos un correo dentro de 2 horas — porque una vez que el paquete sea enviado, ya no podremos cambiar su dirección, nota o información de contacto. Cualquier problema de entrega causado por dirección incorrecta, notas faltantes o selección incorrecta del producto durante el pago es responsabilidad del comprador. Si no recibió el correo de confirmación, por favor revise primero su carpeta de spam. Si no está allí, contáctenos por correo para verificar los detalles de su pedido."
+      },
+      oneBox: {
+        title: "📦 Una Caja por Pedido",
+        desc: "Cada pedido se empaca en una caja por defecto. Si ordenó múltiples scoops y desea que se empaquen en cajas separadas, por favor indíquelo claramente en su nota de pedido."
+      },
+      additional: {
+        title: "🕒 Información Adicional",
+        processingTime: "Tiempo de procesamiento: Consulte la sección de Preguntas Frecuentes en nuestra página principal.",
+        shippingTime: "Tiempo de envío: Consulte la sección de Preguntas Frecuentes en nuestra página principal."
+      }
     },
     faq: {
       title: "Preguntas Frecuentes",
       items: [
-        { q: "¿Qué incluye una Lucky Box?", a: "Cada Lucky Box tiene un tema específico: ¡elige el que más te guste! Cada caja incluye 15 bolas, que representan 15 regalos. Los artículos se seleccionan de forma aleatoria. Si tienes un deseo especial, añade una nota al pagar; haremos lo posible (no garantizado)." },
-        { q: "¿Hacen envíos internacionales?", a: "Sí, enviamos a la mayoría de los países del mundo. Consulta nuestra Política de Envíos para los plazos. Si después de recibir el pago no podemos enviar tu pedido, te reembolsaremos—sin preocupaciones." },
-        { q: "¿Cómo pago?", a: "Aceptamos múltiples métodos de pago, incluyendo Transferencia Bancaria Directa, PayPal, Apple Pay y tarjetas de crédito/débito. Para Apple Pay, contáctanos por WhatsApp para completar tu pago." },
+        { q: "¿Qué incluye una Caja de Sorpresa?", a: "Cada Caja de Sorpresa tiene un tema específico: ¡elige el que más te guste! Cada caja incluye 15 regalos lindos. Los artículos se seleccionan de forma aleatoria. Si tienes un deseo especial, añade una nota al pagar; haremos lo posible (no garantizado)." },
+        { q: "¿Hacen envíos internacionales?", a: "Sí, enviamos a muchos países del mundo. Consulta nuestra Información de Envíos para los detalles. Si después de recibir el pago no podemos enviar tu pedido, te reembolsaremos—sin preocupaciones." },
+        { q: "¿Cómo pago?", a: "Aceptamos múltiples métodos de pago, incluyendo Transferencia Bancaria Directa, PayPal y tarjetas de crédito/débito." },
         { q: "¿Puedo solicitar artículos específicos?", a: "La diversión está en la sorpresa. Puedes dejar una nota al pagar con tus preferencias; haremos lo posible." }
       ]
     },
@@ -424,157 +452,13 @@ export const translations = {
       note: "La información de rastreo generalmente está disponible 2-3 días después del procesamiento."
     },
     footer: {
-      desc: "Llevándote la papelería más linda y cajas de la suerte. Pagos directos seguros y envíos a todo el mundo.",
+      desc: "Llevándote la papelería más linda y cajas de sorpresa. Pagos directos seguros y envíos a todo el mundo.",
       care: "Atención al Cliente",
       newsletter: "Boletín",
-      subDesc: "¡Suscríbete para recibir notificaciones sobre nuevas cajas de la suerte!",
+      subDesc: "¡Suscríbete para recibir notificaciones sobre nuevas cajas de sorpresa!",
       join: "Unirse",
-      rights: "Todos los derechos reservados。",
-      tagline: "Diseñado para amantes de las cajas de la suerte."
-    }
-  },
-  ja: {
-    nav: {
-      home: "ホーム",
-      all: "すべての商品",
-      about: "会社について",
-      contact: "お問い合わせ",
-      track: "注文追跡",
-      faq: "よくある質問",
-      shipping: "配送について",
-      returns: "返品・交換",
-      brandName: "luckboxshop"
-    },
-    hero: {
-      newCollection: "新コレクション",
-      title: "キュート＆カオス",
-      subtitle: "ラッキーボックス",
-      description: "人気のストレージケースと看板のラッキーボックスを発見してください。手数料なしのショッピングのための直接支払いが利用可能です。",
-      cta: "探索を開始"
-    },
-    home: {
-      trending: "人気アイテム",
-      items: "アイテム"
-    },
-    product: {
-      back: "一覧に戻る",
-      reviews: "レビュー",
-      sale: "セール",
-      viewDetails: "詳細を表示",
-      price: "価格",
-      buyerProtection: "バイヤー保護",
-      fastShipping: "迅速な配送",
-      securePayment: "安全な支払い",
-      howToPurchase: "購入方法",
-      payApple: "Apple Payで支払う",
-      whatsappOrder: "WhatsAppで注文",
-      tip: "以下の銀行振込で直接支払うことも、WhatsAppでApple Payやその他の方法で支払うためにお問い合わせすることもできます。",
-      applePayModal: {
-        title: "Apple Payで支払う",
-        desc: "Apple Payを使用して$79.00を支払うには、WhatsAppでサポートチームにお問い合わせください。安全な支払いリンクをすぐにお送りします。",
-        cancel: "キャンセル",
-        chat: "今すぐチャット"
-      }
-    },
-    bank: {
-      title: "支払い情報",
-      subtitle: "銀行振込を完了するには、以下の詳細を使用してください。",
-      beneficiary: "受益者",
-      bankName: "銀行名",
-      accountNo: "口座番号",
-      swift: "SWIFT / BIC",
-      country: "国",
-      province: "都道府県",
-      city: "市",
-      fullAddress: "住所",
-      footer: "振込の説明に注文参照番号を含めてください。",
-      copy: "コピー"
-    },
-    contact: {
-      title: "お問い合わせ",
-      subtitle: "注文やボックスについて質問がありますか？",
-      getInTouch: "お問い合わせ",
-      whatsappSupport: "WhatsApp (最速のサポート)",
-      whatsappDesc: "直接注文サポートとApple Payに関するお問い合わせのために、私たちを追加してください！",
-      emailSupport: "メールサポート",
-      location: "場所",
-      hours: "営業時間",
-      form: {
-        name: "名前",
-        email: "メール",
-        orderNo: "注文番号 (オプション)",
-        message: "メッセージ",
-        send: "メッセージを送信",
-        sentTitle: "メッセージを送信しました！",
-        sentDesc: "お問い合わせありがとうございます。サポートチームが24時間以内にお返事します。",
-        returnHome: "ホームに戻る"
-      }
-    },
-    about: {
-      title: "会社概要",
-      content: [
-        "ラッキーボックスショップへようこそ！可愛い文房具、ラッキーボックス、コレクターズアイテムの究極の目的地です！",
-        "カワイイもの全般への情熱を持って設立された私たちは、慎重に選択されたアイテムでお客様のお家に喜びをもたらすことに努力しています。最新のキャラクターアクセサリーをお探しの方、ブラインドスクープのスリルをお探しの方、どなたにも特別なものがあります。",
-        "私たちはアジアにある小規模な専門チームで、信頼性と最良の価格を確保するためにメーカーから直接調達しています。私たちの「ラッキーボックス」はその豊富さと多様性で人気を博し、開封体験ごとにサプライズパーティーのようなものになっています。"
-      ],
-      promiseTitle: "私たちの約束",
-      promises: [
-        "丁寧な梱包と正確な配送。"
-      ]
-    },
-    shipping: {
-      title: "配送ポリシー",
-      processingTitle: "処理時間",
-      processingDesc: "すべての注文は3～10営業日以内に処理されます。注文は週末や祝日には発送または配信されません。",
-      ratesTitle: "配送料",
-      ratesDesc: "$59以上の注文で送料無料。それ以外の場合は、標準的な国際配送料が適用され、チェックアウト時に計算されます。",
-      deliveryTitle: "おおよその配送時間",
-      deliveryList: [
-        "米国・カナダ: 10-20営業日",
-        "ヨーロッパ: 12-25営業日",
-        "アジア太平洋地域: 7-15営業日"
-      ],
-      restrictedTitle: "配送制限のある国",
-      restrictedDesc: "輸送制限または規制のため、以下の国には配送していません：アフガニスタン、ベラルーシ、中央アフリカ共和国、キューバ、イラン、イラク、リビア、北朝鮮、ソマリア、スーダン、シリア、ベネズエラ、イエメン、ジンバブエ。これらの国から注文された場合、お支払いを返金いたします。",
-      availableTitle: "配送可能な国",
-      availableDesc: "現在、以下の国に配送しています：アメリカ合衆国、英国、日本、オーストラリア、ニュージーランド、マレーシア、カナダ、ドイツ、フランス、イタリア、スペイン、オランダ、ベルギー、スイス、スウェーデン、ノルウェー、デンマーク、フィンランド、オーストリア、ポルトガル、アイルランド、ポーランド、チェコ共和国、ハンガリー、スロバキア、スロベニア、クロアチア、ギリシャ、キプロス、マルタ、ブルガリア、ルーマニア、エストニア、ラトビア、リトアニア、ウクライナ、ロシア、韓国、シンガポール、タイ、フィリピン、インドネシア、ベトナム、香港、マカオ、台湾、インド、アラブ首長国連邦、サウジアラビア、カタール、クウェート、バーレーン、オマーン、イスラエル、南アフリカ、ブラジル、チリ、メキシコ、アルゼンチン。",
-      note: "*通関手続きにより、配送の遅延が時々発生する場合があります。"
-    },
-    returns: {
-      title: "返品ポリシー",
-      note: "注文を入力する前に、返品ポリシーをよくお読みください。",
-      standardTitle: "発送前（24時間以内）",
-      standardDesc: "注文が発送されていない場合、注文から24時間以内にメールまたはWhatsAppでお問い合わせいただくことで、全額返金をお申し込みいただけます。",
-      deliveredTitle: "配送後（未開封のパッケージ）",
-      deliveredDesc: "注文を受け取られたが、パッケージが未開封で損傷がない場合、受け取りから7日以内に返品と返金をお申し込みいただけます。",
-      openedTitle: "開封または使用済みの商品",
-      openedDesc: "パッケージが開封された場合、または商品が使用された場合、返品や返金は受け付けられません。",
-      damagedTitle: "損傷した商品",
-      damagedDesc: "商品が損傷して到着した場合は、パッケージと損傷した商品の写真を添えて、すぐにメールまたはWhatsAppでお問い合わせください。交換または返金の手配をいたします。"
-    },
-    faq: {
-      title: "よくある質問",
-      items: [
-        { q: "ラッキーボックスの中には何が入っていますか？", a: "各ラッキーボックスには特定のテーマがあります—お気に入りのものを選んでください！各ボックスには15個のボールが含まれており、15個のギフトを表しています。アイテムはランダムに選択されます。特別な希望がある場合は、チェックアウト時にメモを追加してください。私たちは最善を尽くします（保証はありません）。" },
-        { q: "国際配送はしていますか？", a: "はい、世界のほとんどの国に配送しています。タイムラインについては、配送ポリシーを参照してください。支払いを受けた後、注文を配送できない場合、返金いたしますのでご安心ください。" },
-        { q: "どのように支払いますか？", a: "銀行振込、PayPal、Apple Pay、クレジット/デビットカードなど、複数の支払い方法を受け付けています。Apple Payの場合、支払いを完了するためにWhatsAppでお問い合わせください。" },
-        { q: "特定のアイテムをリクエストできますか？", a: "楽しみはサプライズにあります！チェックアウト時に好みのメモを残すことができます。私たちは最善を尽くします。" }
-      ]
-    },
-    track: {
-      title: "注文を追跡する",
-      desc: "注文に問題が発生した場合に迅速にお問い合わせできるように、有効な電話番号を提供し、メールアドレスが正しいことを確認してください。配送先住所が正確であることを二重チェックしてください。住所が建物内にある場合は、階数と部屋番号（またはアパート番号）を含めてください。住所が明確でないと、地元の配達員があなたの場所を見つけられないか、受け取りを拒否する可能性があります。特別なリクエストは、チェックアウトのメモに追加するか、注文後2時間以内にメールで送信する必要があります。",
-      placeholder: "注文番号（例：JP-8821）",
-      note: "追跡情報は通常、注文の処理後2-3日以内に利用可能になります。"
-    },
-    footer: {
-      desc: "最も可愛い文房具とラッキーボックスをお届けします。安全な直接支払いと世界中への配送。",
-      care: "カスタマーケア",
-      newsletter: "ニュースレター",
-      subDesc: "新しいラッキーボックスのドロップについて通知を受け取るために登録してください！",
-      join: "参加する",
-      rights: "全著作権所有。",
-      tagline: "どこにいてもラッキーボックス愛好者のために設計されています。"
+      rights: "Todos los derechos reservados.",
+      tagline: "Diseñado para amantes de las cajas de sorpresa."
     }
   }
 };

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useCart } from './CartContext';
 import { useAuth } from './AuthContext';
 import { useLanguage } from './LanguageContext';
-import BankInfoCard from './BankInfoCard';
 import PayPalButton from './PayPalButton';
 
 interface CheckoutProps {
@@ -28,22 +27,86 @@ const Checkout: React.FC<CheckoutProps> = ({ onClose, onSuccess }) => {
   const [paymentMethod, setPaymentMethod] = useState<'bank' | 'paypal'>('bank');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validateZipCode = (zipCode: string, country: string): boolean => {
+    const usZipRegex = /^\d{5}(-\d{4})?$/;
+    const ukZipRegex = /^[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2}$/i;
+    
+    if (country.toLowerCase().includes('us') || country.toLowerCase().includes('usa') || country.toLowerCase().includes('united states')) {
+      return usZipRegex.test(zipCode);
+    } else if (country.toLowerCase().includes('uk') || country.toLowerCase().includes('united kingdom')) {
+      return ukZipRegex.test(zipCode);
+    }
+    return zipCode.length >= 3;
+  };
+
+  const validatePhone = (phone: string): boolean => {
+    const phoneRegex = /^[\+]?[(]?[0-9]{1,3}[)]?[-\s\.]?[0-9]{1,4}[-\s\.]?[0-9]{1,4}[-\s\.]?[0-9]{1,9}$/;
+    return phoneRegex.test(phone.replace(/\s/g, ''));
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setShippingInfo(prev => ({ ...prev, [name]: value }));
+    if (validationErrors[name]) {
+      setValidationErrors(prev => ({ ...prev, [name]: '' }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // 验证表单
-    if (!shippingInfo.name || !shippingInfo.email || !shippingInfo.address || 
-        !shippingInfo.city || !shippingInfo.country || !shippingInfo.zipCode || !shippingInfo.phone) {
-      setError('Please fill in all shipping information');
+    const errors: Record<string, string> = {};
+    
+    if (!shippingInfo.name.trim()) {
+      errors.name = 'Full name is required';
+    }
+    
+    if (!shippingInfo.email.trim()) {
+      errors.email = 'Email address is required';
+    } else if (!validateEmail(shippingInfo.email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+    
+    if (!shippingInfo.address.trim()) {
+      errors.address = 'Address is required';
+    } else if (shippingInfo.address.trim().length < 10) {
+      errors.address = 'Please enter a complete address (at least 10 characters)';
+    }
+    
+    if (!shippingInfo.city.trim()) {
+      errors.city = 'City is required';
+    }
+    
+    if (!shippingInfo.country.trim()) {
+      errors.country = 'Country is required';
+    }
+    
+    if (!shippingInfo.zipCode.trim()) {
+      errors.zipCode = 'Zip/Postal code is required';
+    } else if (!validateZipCode(shippingInfo.zipCode, shippingInfo.country)) {
+      errors.zipCode = 'Please enter a valid zip/postal code for your country';
+    }
+    
+    if (!shippingInfo.phone.trim()) {
+      errors.phone = 'Phone number is required';
+    } else if (!validatePhone(shippingInfo.phone)) {
+      errors.phone = 'Please enter a valid phone number';
+    }
+    
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+      setError('Please correct the highlighted fields');
       return;
     }
     
+    setValidationErrors({});
     setIsSubmitting(true);
     setError(null);
     
@@ -270,11 +333,7 @@ const Checkout: React.FC<CheckoutProps> = ({ onClose, onSuccess }) => {
               </div>
             </div>
             
-            {paymentMethod === 'bank' && (
-              <div className="mb-6">
-                <BankInfoCard />
-              </div>
-            )}
+            
             
             <button
               type="submit"
@@ -286,7 +345,15 @@ const Checkout: React.FC<CheckoutProps> = ({ onClose, onSuccess }) => {
             
             {paymentMethod === 'paypal' && (
               <div className="mt-4">
-                <PayPalButton amount={totalPrice} onSuccess={handleSubmit} />
+                <PayPalButton 
+                  amount={totalPrice} 
+                  description={`Order from luckboxdiy - ${cart.length} items`}
+                  productId={cart.map(item => item.product.id).join(',')}
+                  onSuccess={() => {
+                    clearCart();
+                    onSuccess();
+                  }}
+                />
               </div>
             )}
           </div>

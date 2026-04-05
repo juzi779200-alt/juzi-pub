@@ -1,5 +1,7 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 
+const API_BASE_URL = '/api';
+
 interface User {
   id: string;
   email: string;
@@ -34,57 +36,58 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // 模拟登录
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('token');
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+  };
+
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     setError(null);
     try {
-      // 模拟API调用
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // 模拟成功登录
-      setUser({
-        id: '1',
-        email,
-        name: email.split('@')[0]
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
       });
-      
-      // 保存到localStorage
-      localStorage.setItem('user', JSON.stringify({
-        id: '1',
-        email,
-        name: email.split('@')[0]
-      }));
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        setUser(data.user);
+      } else {
+        setError(data.message || 'Login failed');
+      }
     } catch (err) {
-      setError('Invalid email or password');
+      setError('Network error. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  // 模拟注册
   const register = async (name: string, email: string, password: string) => {
     setIsLoading(true);
     setError(null);
     try {
-      // 模拟API调用
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // 模拟成功注册
-      setUser({
-        id: '1',
-        email,
-        name
+      const response = await fetch(`${API_BASE_URL}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
       });
-      
-      // 保存到localStorage
-      localStorage.setItem('user', JSON.stringify({
-        id: '1',
-        email,
-        name
-      }));
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        setUser(data.user);
+      } else {
+        setError(data.message || 'Registration failed');
+      }
     } catch (err) {
-      setError('Registration failed');
+      setError('Network error. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -92,10 +95,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem('token');
     localStorage.removeItem('user');
   };
 
-  // 检查localStorage中是否有用户信息
   React.useEffect(() => {
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
@@ -103,6 +106,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser(JSON.parse(savedUser));
       } catch (err) {
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
       }
     }
   }, []);

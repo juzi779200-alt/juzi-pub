@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Star, ShieldCheck, Truck, CreditCard, MessageCircle, Apple } from 'lucide-react';
-import { Product } from '../types';
-import { CONTACT_INFO } from '../constants';
+import { ArrowLeft, Star, ShieldCheck, Truck, CreditCard } from 'lucide-react';
+import { Product, ProductVariant } from '../types';
 import PayPalButton from './PayPalButton';
 import { useLanguage } from './LanguageContext';
 
@@ -12,12 +11,15 @@ interface ProductDetailProps {
 
 const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack }) => {
   const [activeImage, setActiveImage] = useState(product.images[0]);
-  const [showApplePayModal, setShowApplePayModal] = useState(false);
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | undefined>(
+    product.variants && product.variants.length > 0 ? product.variants[0] : undefined
+  );
   const { language, t } = useLanguage();
 
-  const handleApplePayClick = () => {
-    setShowApplePayModal(true);
-  };
+  const currentPrice = selectedVariant ? selectedVariant.price : product.price;
+  const currentTitle = selectedVariant 
+    ? `${product.title[language]} - ${selectedVariant.name[language]}`
+    : product.title[language];
 
   return (
     <div className="animate-fade-in pb-20">
@@ -83,11 +85,38 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack }) => {
             </div>
 
             <div className="flex items-baseline gap-4 mb-8">
-              <span className="text-4xl font-bold text-brand-accent">${product.price.toFixed(2)}</span>
+              <span className="text-4xl font-bold text-brand-accent">${currentPrice.toFixed(2)}</span>
               {product.originalPrice && (
                 <span className="text-xl text-gray-400 line-through decoration-2">${product.originalPrice.toFixed(2)}</span>
               )}
             </div>
+
+            {/* Variants Selection */}
+            {product.variants && product.variants.length > 0 && (
+              <div className="mb-8">
+                <h3 className="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wide">Choose Option</h3>
+                <div className="flex flex-wrap gap-2">
+                  {product.variants.map((variant) => (
+                    <button
+                      key={variant.id}
+                      onClick={() => setSelectedVariant(variant)}
+                      className={`px-4 py-2 rounded-lg border-2 text-sm font-medium transition-all ${
+                        selectedVariant?.id === variant.id
+                          ? 'border-brand-accent bg-brand-accent/10 text-brand-accent'
+                          : 'border-gray-200 hover:border-gray-300 text-gray-700'
+                      }`}
+                    >
+                      {variant.name[language]}
+                    </button>
+                  ))}
+                </div>
+                {selectedVariant && (
+                  <p className="mt-2 text-sm text-gray-500">
+                    Selected: {selectedVariant.name[language]} - ${selectedVariant.price.toFixed(2)}
+                  </p>
+                )}
+              </div>
+            )}
 
             <div className="prose prose-pink text-gray-600 mb-8 leading-relaxed">
               <p>{product.description[language]}</p>
@@ -114,81 +143,13 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack }) => {
                    {t.product.howToPurchase}
                </h2>
                
-               {/* Contact & Apple Pay Options */}
-               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                  <button 
-                    onClick={handleApplePayClick}
-                    className="flex items-center justify-center gap-2 bg-black text-white px-6 py-4 rounded-xl font-bold hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-                  >
-                    <Apple size={24} />
-                    <span>{t.product.payApple}</span>
-                  </button>
-                  
-                  <a 
-                    href={`https://wa.me/${CONTACT_INFO.whatsapp.replace(/[^0-9]/g, '')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 bg-[#25D366] text-white px-6 py-4 rounded-xl font-bold hover:bg-[#20bd5a] transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-                  >
-                    <MessageCircle size={24} />
-                    <span>{t.product.whatsappOrder}</span>
-                  </a>
-               </div>
-
               <div className="mb-8">
-                <PayPalButton amount={product.price} description={product.title[language]} productId={product.id} currency="USD" />
+                <PayPalButton amount={currentPrice} description={currentTitle} productId={product.id} currency="USD" />
               </div>
-              
-              {/* Bank transfer removed as requested */}
             </div>
           </div>
         </div>
       </div>
-      
-      {/* Apple Pay Modal Simulation */}
-      {showApplePayModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-white rounded-2xl max-w-md w-full p-8 shadow-2xl relative">
-            <button 
-              onClick={() => setShowApplePayModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-            <div className="text-center">
-              <div className="bg-black text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Apple size={32} />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">{t.product.applePayModal.title}</h3>
-              <p className="text-gray-600 mb-6">
-                {t.product.applePayModal.desc}
-              </p>
-              
-              <div className="bg-gray-100 p-4 rounded-xl mb-6 flex flex-col items-center">
-                <span className="text-xs uppercase tracking-wide text-gray-500 font-bold mb-1">WhatsApp Number</span>
-                <span className="text-xl font-bold text-gray-900 select-all">{CONTACT_INFO.whatsapp}</span>
-              </div>
-
-              <div className="flex gap-3">
-                 <button 
-                   onClick={() => setShowApplePayModal(false)}
-                   className="flex-1 py-3 text-gray-500 font-bold hover:bg-gray-50 rounded-xl transition-colors"
-                 >
-                   {t.product.applePayModal.cancel}
-                 </button>
-                 <a 
-                   href={`https://wa.me/${CONTACT_INFO.whatsapp.replace(/[^0-9]/g, '')}`}
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   className="flex-1 py-3 bg-[#25D366] text-white font-bold rounded-xl hover:bg-[#20bd5a] transition-colors flex items-center justify-center gap-2"
-                 >
-                   <MessageCircle size={18} /> {t.product.applePayModal.chat}
-                 </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

@@ -1,0 +1,6 @@
+{
+  "paypal": {
+    "client_id": "请在这里输入你的 PayPal Client ID",
+    "secret": "请在这里输入你的 PayPal Secret"
+  }
+}
