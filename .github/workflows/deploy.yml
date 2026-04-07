@@ -24,12 +24,12 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Deploy to Server via SSH
+      - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          password: ${{ secrets.REMOTE_PASSWORD }}
           script: |
             # 清空目标目录
             rm -rf /var/www/html/dist/*
@@ -39,7 +39,7 @@ jobs:
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          password: ${{ secrets.REMOTE_PASSWORD }}
           source: "dist/*"
           target: "/var/www/html"
           strip_components: 1
@@ -49,7 +49,7 @@ jobs:
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          password: ${{ secrets.REMOTE_PASSWORD }}
           script: |
             sudo systemctl restart nginx
             echo "Nginx restarted successfully!"
