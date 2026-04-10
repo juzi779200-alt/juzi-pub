@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+declare global {
+  interface Window {
+    paypal?: any;
+  }
+}
+
 interface PayPalButtonProps {
   amount: number;
   currency?: string;
@@ -26,7 +32,7 @@ const PayPalButton: React.FC<PayPalButtonProps> = ({
     if (!scriptLoaded) {
       const script = document.createElement('script');
       script.type = 'text/javascript';
-      script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.VITE_PAYPAL_CLIENT_ID}&currency=${currency}`;
+      script.src = `https://www.paypal.com/sdk/js?client-id=${import.meta.env.VITE_PAYPAL_CLIENT_ID}&currency=${currency}`;
       script.async = true;
       script.onload = () => {
         setScriptLoaded(true);

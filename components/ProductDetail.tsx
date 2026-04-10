@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { ArrowLeft, Star, ShieldCheck, Truck, CreditCard } from 'lucide-react';
 import { Product, ProductVariant } from '../types';
 import PayPalButton from './PayPalButton';
 import { useLanguage } from './LanguageContext';
+import { useCart } from './CartContext';
 
 interface ProductDetailProps {
   product: Product;
@@ -14,12 +15,40 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack }) => {
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | undefined>(
     product.variants && product.variants.length > 0 ? product.variants[0] : undefined
   );
+  const [quantity, setQuantity] = useState(1);
   const { language, t } = useLanguage();
+  const paymentSectionRef = useRef<HTMLDivElement>(null);
+  const { addToCart } = useCart();
 
   const currentPrice = selectedVariant ? selectedVariant.price : product.price;
   const currentTitle = selectedVariant 
     ? `${product.title[language]} - ${selectedVariant.name[language]}`
     : product.title[language];
+
+  const scrollToPayment = () => {
+    paymentSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleAddToCart = () => {
+    // Create a product object that matches the Product type
+    const cartProduct: Product = {
+      ...product,
+      title: {
+        en: currentTitle,
+        es: currentTitle
+      },
+      price: currentPrice
+    };
+    addToCart(cartProduct, quantity);
+    alert('Added to cart successfully!');
+  };
+
+  const handleQuantityChange = (delta: number) => {
+    const newQuantity = quantity + delta;
+    if (newQuantity > 0) {
+      setQuantity(newQuantity);
+    }
+  };
 
   return (
     <div className="animate-fade-in pb-20">
@@ -91,6 +120,57 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack }) => {
               )}
             </div>
 
+            {/* Stock Information */}
+            <div className="mb-6">
+              <p className="text-sm text-green-600 font-medium">
+                库存: {product.inventory} 件
+              </p>
+            </div>
+
+            {/* Quantity Selection */}
+            <div className="flex items-center gap-4 mb-8">
+              <div className="flex items-center border-2 border-gray-200 rounded-lg overflow-hidden">
+                <button 
+                  onClick={() => handleQuantityChange(-1)}
+                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 transition-colors"
+                >
+                  -
+                </button>
+                <input 
+                  type="number" 
+                  value={quantity} 
+                  min="1"
+                  onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                  className="w-16 text-center border-0 outline-none"
+                />
+                <button 
+                  onClick={() => handleQuantityChange(1)}
+                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 transition-colors"
+                >
+                  +
+                </button>
+              </div>
+              <button 
+                onClick={handleAddToCart}
+                className="bg-brand-accent text-white px-6 py-2 rounded-lg font-bold hover:bg-brand-dark transition-colors flex-1 md:flex-none"
+              >
+                添加到购物车
+              </button>
+            </div>
+
+            {/* Payment Methods */}
+            <div className="mb-8">
+              <p className="text-sm text-gray-500 mb-2">请在下单时于结账备注中添加您的偏好设置，或在两小时内通过电子邮件告知我们。如果付款失败，请尝试使用谷歌浏览器——这通常可以解决大多数付款问题。</p>
+              <div className="flex gap-4 items-center">
+                <div className="bg-white rounded-lg border border-gray-200 p-3 flex items-center gap-3">
+                  <div className="text-2xl font-bold text-blue-600">VISA</div>
+                  <div className="text-xl font-bold text-red-600">Mastercard</div>
+                  <div className="text-xl font-bold text-gray-700">Apple Pay</div>
+                  <div className="text-xl font-bold text-blue-700">PayPal</div>
+                </div>
+              </div>
+            </div>
+
             {/* Variants Selection */}
             {product.variants && product.variants.length > 0 && (
               <div className="mb-8">
@@ -123,28 +203,34 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack }) => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-                <div className="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow-sm border border-gray-100 text-center">
+                <div className="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow-sm border border-gray-100 text-center cursor-pointer hover:shadow-md transition-shadow">
                     <ShieldCheck className="text-brand-accent mb-2" />
                     <span className="text-xs font-semibold text-gray-700">{t.product.buyerProtection}</span>
                 </div>
-                <div className="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow-sm border border-gray-100 text-center">
+                <div className="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow-sm border border-gray-100 text-center cursor-pointer hover:shadow-md transition-shadow">
                     <Truck className="text-brand-accent mb-2" />
                     <span className="text-xs font-semibold text-gray-700">{t.product.fastShipping}</span>
                 </div>
-                 <div className="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow-sm border border-gray-100 text-center">
+                 <div className="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow-sm border border-gray-100 text-center cursor-pointer hover:shadow-md transition-shadow" onClick={scrollToPayment}>
                     <CreditCard className="text-brand-accent mb-2" />
                     <span className="text-xs font-semibold text-gray-700">{t.product.securePayment}</span>
                 </div>
             </div>
 
-            <div className="border-t border-gray-200 pt-8">
+            <div className="border-t border-gray-200 pt-8" ref={paymentSectionRef}>
                <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
                    <span className="w-1 h-6 bg-brand-accent rounded-full"></span>
                    {t.product.howToPurchase}
                </h2>
                
               <div className="mb-8">
-                <PayPalButton amount={currentPrice} description={currentTitle} productId={product.id} currency="USD" />
+                <PayPalButton 
+                  amount={currentPrice} 
+                  currency="USD" 
+                  onSuccess={(orderId) => console.log('Payment successful:', orderId)}
+                  onError={(error) => console.error('Payment error:', error)}
+                  onCancel={() => console.log('Payment cancelled')}
+                />
               </div>
             </div>
           </div>

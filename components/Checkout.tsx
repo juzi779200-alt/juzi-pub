@@ -335,23 +335,47 @@ const Checkout: React.FC<CheckoutProps> = ({ onClose, onSuccess }) => {
             
             
             
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-brand-dark text-white py-3 rounded-xl font-bold hover:bg-brand-accent transition-colors"
-            >
-              {isSubmitting ? 'Processing...' : 'Place Order'}
-            </button>
+            {paymentMethod === 'bank' && (
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-brand-dark text-white py-3 rounded-xl font-bold hover:bg-brand-accent transition-colors"
+              >
+                {isSubmitting ? 'Processing...' : 'Place Order'}
+              </button>
+            )}
             
             {paymentMethod === 'paypal' && (
               <div className="mt-4">
                 <PayPalButton 
                   amount={totalPrice} 
-                  description={`Order from luckboxdiy - ${cart.length} items`}
-                  productId={cart.map(item => item.product.id).join(',')}
-                  onSuccess={() => {
+                  onSuccess={(orderId) => {
+                    // 生成订单号
+                    const order = {
+                      id: orderId,
+                      date: new Date().toISOString(),
+                      items: cart,
+                      totalPrice,
+                      shippingInfo,
+                      paymentMethod: 'paypal',
+                      status: 'processing'
+                    };
+                    
+                    // 获取现有订单
+                    const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+                    // 添加新订单
+                    existingOrders.push(order);
+                    // 保存回localStorage
+                    localStorage.setItem('orders', JSON.stringify(existingOrders));
+                    
                     clearCart();
                     onSuccess();
+                  }}
+                  onError={(error) => {
+                    setError(error);
+                  }}
+                  onCancel={() => {
+                    console.log('Payment cancelled');
                   }}
                 />
               </div>
