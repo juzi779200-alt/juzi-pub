@@ -1,125 +1,199 @@
 const express = require('express');
 const cors = require('cors');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-require('dotenv').config();
+const bodyParser = require('body-parser');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const db = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const JWT_SECRET = 'your-secret-key'; // 实际生产环境中应该使用环境变量
 
-// Security middleware
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://www.paypal.com", "https://www.sandbox.paypal.com"],
-      imgSrc: ["'self'", "data:", "https:", "http:"],
-      connectSrc: ["'self'", "https://api.paypal.com", "https://api.sandbox.paypal.com"],
-      frameSrc: ["'self'", "https://www.paypal.com", "https://www.sandbox.paypal.com"],
-    },
-  },
-  crossOriginEmbedderPolicy: false,
-}));
+// 中间件
+app.use(cors());
+app.use(bodyParser.json());
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  message: { message: 'Too many requests from this IP, please try again later.' },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+// 生成订单号
+function generateOrderNumber() {
+  return 'ORD' + Date.now() + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+}
 
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // limit each IP to 5 login attempts per windowMs
-  message: { message: 'Too many login attempts, please try again later.' },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+// 注册接口
+app.post('/api/auth/register', (req, res) => {
+  const { name, email, password } = req.body;
 
-// Apply rate limiting to all requests
-app.use(limiter);
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: 'Please provide all required fields' });
+  }
 
-// CORS configuration
-app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://luckboxdiy.com', 'https://www.luckboxdiy.com']
-    : ['http://localhost:3000', 'http://localhost:5173'],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-}));
+  // 检查邮箱是否已存在
+  const existingUser = db.getUserByEmail(email);
+  if (existingUser) {
+    return res.status(400).json({ message: 'Email already exists' });
+  }
 
-app.use(express.json({ limit: '10kb' })); // Limit body size
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+  // 加密密码
+  const hashedPassword = bcrypt.hashSync(password, 10);
 
-// Request logging middleware
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.path} - IP: ${req.ip}`);
-  next();
-});
+  // 插入新用户
+  const newUser = db.addUser({
+    name,
+    email,
+    password: hashedPassword,
+    created_at: new Date().toISOString()
+  });
 
-app.get('/', (req, res) => {
-  res.json({ 
-    message: 'Welcome to luckboxdiy API',
-    version: '1.0.0',
-    timestamp: new Date().toISOString()
+  // 生成 JWT token
+  const token = jwt.sign({ id: newUser.id, email }, JWT_SECRET, { expiresIn: '1d' });
+
+  res.status(201).json({
+    message: 'Registration successful',
+    token,
+    user: {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email
+    }
   });
 });
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'healthy',
-    uptime: process.uptime(),
-    timestamp: new Date().toISOString()
+// 登录接口
+app.post('/api/auth/login', (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Please provide all required fields' });
+  }
+
+  // 查找用户
+  const user = db.getUserByEmail(email);
+  if (!user) {
+    return res.status(401).json({ message: 'Invalid email or password' });
+  }
+
+  // 验证密码
+  const isPasswordValid = bcrypt.compareSync(password, user.password);
+  if (!isPasswordValid) {
+    return res.status(401).json({ message: 'Invalid email or password' });
+  }
+
+  // 生成 JWT token
+  const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1d' });
+
+  res.status(200).json({
+    message: 'Login successful',
+    token,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email
+    }
   });
 });
 
-const authRoutes = require('./routes/auth');
-const orderRoutes = require('./routes/orders');
-const shippingRoutes = require('./routes/shipping');
-const paypalRoutes = require('./routes/paypal');
+// 获取用户信息接口
+app.get('/api/auth/me', (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1];
 
-// Apply stricter rate limiting to auth routes
-app.use('/api/auth', authLimiter, authRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/shipping', shippingRoutes);
-app.use('/api/paypal', paypalRoutes);
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found' });
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const user = db.getUserById(decoded.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({
+      id: user.id,
+      name: user.name,
+      email: user.email
+    });
+  } catch (error) {
+    res.status(401).json({ message: 'Invalid token' });
+  }
 });
 
-// Global error handler
-app.use((err, req, res, next) => {
-  console.error('Error:', err.stack);
-  
-  // Don't expose error details in production
-  const message = process.env.NODE_ENV === 'production' 
-    ? 'Something went wrong!' 
-    : err.message;
-  
-  res.status(err.status || 500).json({ 
-    message,
-    ...(process.env.NODE_ENV !== 'production' && { stack: err.stack })
-  });
+// 创建订单接口
+app.post('/api/orders', (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  const { items, totalPrice, shippingAddress, paymentMethod } = req.body;
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const orderNumber = generateOrderNumber();
+
+    // 创建订单
+    const newOrder = db.addOrder({
+      user_id: decoded.id,
+      order_number: orderNumber,
+      total_price: totalPrice,
+      status: 'processing',
+      shipping_address: shippingAddress,
+      payment_method: paymentMethod,
+      items: items,
+      created_at: new Date().toISOString()
+    });
+
+    res.status(201).json({
+      message: 'Order created successfully',
+      order: {
+        id: newOrder.id,
+        orderNumber: newOrder.order_number,
+        totalPrice: newOrder.total_price,
+        status: newOrder.status,
+        shippingAddress: newOrder.shipping_address,
+        paymentMethod: newOrder.payment_method,
+        createdAt: newOrder.created_at
+      }
+    });
+  } catch (error) {
+    res.status(401).json({ message: 'Invalid token' });
+  }
 });
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received. Shutting down gracefully...');
-  server.close(() => {
-    console.log('Process terminated.');
-  });
+// 获取用户订单列表接口
+app.get('/api/orders', (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const orders = db.getOrdersByUserId(decoded.id);
+
+    // 转换订单格式
+    const formattedOrders = orders.map(order => ({
+      id: order.id,
+      orderNumber: order.order_number,
+      totalPrice: order.total_price,
+      status: order.status,
+      shippingAddress: order.shipping_address,
+      paymentMethod: order.payment_method,
+      items: order.items,
+      createdAt: order.created_at
+    }));
+
+    res.status(200).json(formattedOrders);
+  } catch (error) {
+    res.status(401).json({ message: 'Invalid token' });
+  }
 });
 
-const server = app.listen(PORT, () => {
+// 健康检查接口
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ message: 'Server is running' });
+});
+
+// 启动服务器
+app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
-
-module.exports = app;

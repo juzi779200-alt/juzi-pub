@@ -44,6 +44,73 @@ jobs:
           target: "/var/www/html"
           strip_components: 1
 
+      - name: Deploy backend service
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          password: ${{ secrets.REMOTE_PASSWORD }}
+          script: |
+            # 创建后端目录
+            mkdir -p /var/www/html/backend
+            
+            # 复制后端文件
+            cd /var/www/html/backend
+            rm -rf *
+            
+      - name: Upload backend files
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          password: ${{ secrets.REMOTE_PASSWORD }}
+          source: "backend/*"
+          target: "/var/www/html/backend"
+
+      - name: Install backend dependencies
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          password: ${{ secrets.REMOTE_PASSWORD }}
+          script: |
+            cd /var/www/html/backend
+            npm install --production
+
+      - name: Setup backend service
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          password: ${{ secrets.REMOTE_PASSWORD }}
+          script: |
+            # 创建 systemd 服务文件
+            cat > /etc/systemd/system/luckboxdiy-backend.service << 'EOF'
+            [Unit]
+            Description=Luckboxdiy Backend Service
+            After=network.target
+
+            [Service]
+            ExecStart=/usr/bin/node /var/www/html/backend/server.js
+            WorkingDirectory=/var/www/html/backend
+            Restart=always
+            RestartSec=10
+            Environment=NODE_ENV=production
+
+            [Install]
+            WantedBy=multi-user.target
+            EOF
+            
+            # 重新加载 systemd
+            sudo systemctl daemon-reload
+            
+            # 启用并启动服务
+            sudo systemctl enable luckboxdiy-backend.service
+            sudo systemctl restart luckboxdiy-backend.service
+            
+            # 检查服务状态
+            sudo systemctl status luckboxdiy-backend.service
+
       - name: Restart Nginx
         uses: appleboy/ssh-action@master
         with:
